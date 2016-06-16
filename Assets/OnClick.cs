@@ -3,12 +3,16 @@ using System.Collections;
 
 public class OnClick : MonoBehaviour {
 
+    bool p1turn = true;
     public GameObject Piece;
+    public Material P1Color;
+    public Material P2Color;
+
 
 
     // Use this for initialization
     void Start () {
-	
+        
 	}
 	
 	// Update is called once per frame
@@ -36,13 +40,19 @@ public class OnClick : MonoBehaviour {
             Debug.DrawLine(ray.origin, hit.point);
             Debug.Log("Hit object: " + hit.collider.name);
 
-            if (hit.collider.tag == "piece")
+           /* if (hit.collider.tag == "piece")
                 hit.collider.GetComponent<Renderer>().enabled = !hit.collider.GetComponent<Renderer>().enabled;
+                */
 
-            if (hit.collider.tag == "board")
-            {
+            if (hit.collider.tag == "board")  {
+                
+                if (p1turn) Piece.GetComponent<Renderer>().material = P1Color;
+                else Piece.GetComponent<Renderer>().material = P2Color;
+
                 Vector3 distance = new Vector3(0, 0, (float)-0.5);
                 Instantiate(Piece, hit.collider.transform.position+distance, hit.collider.transform.rotation);
+
+                p1turn = !p1turn;
             }
         }
     }
