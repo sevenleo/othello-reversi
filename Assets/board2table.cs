@@ -80,10 +80,6 @@ public class board2table : MonoBehaviour {
 
 
 
-
-    
-
-
     public static void validmoves(bool playerTF)
     {
         int player;
@@ -105,6 +101,5 @@ public class board2table : MonoBehaviour {
                 
     }
     */
-
 
 }

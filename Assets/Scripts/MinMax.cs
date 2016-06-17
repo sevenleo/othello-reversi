@@ -28,7 +28,7 @@ public class MinMax : MonoBehaviour {
             depth -= 1;
 
         if (maximizingPlayer)   {
-            bestValue = -99999999;
+            bestValue = -(System.Int32.MaxValue);
             validmoves = calculate_validmoves(node);
 
             foreach (char child in validmoves)          {
@@ -39,7 +39,7 @@ public class MinMax : MonoBehaviour {
             return bestValue;
         }
         else  {    // minimizingplayer
-        bestValue= 99999999;
+        bestValue= System.Int32.MaxValue;
             validmoves = calculate_validmoves(node);
             foreach (char child in validmoves){
                 int newvalue = minimax(child, depth, true);
