@@ -13,17 +13,22 @@ public class OnClick : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        
-	}
+        board2table.refresh("D4", true);
+        board2table.refresh("E5", true);
+        board2table.refresh("D5", false);
+        board2table.refresh("E4", false);
+
+    }
 	
 	// Update is called once per frame
-        void Update()
+    void Update()
     {
+        //dicas
+        board2table.validmoves(p1turn);
+
         if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("Pressed left click, casting ray.");
             CastRay();
-        }
+        
 
     }
 
@@ -43,8 +48,9 @@ public class OnClick : MonoBehaviour {
                 if (p1turn) Piece.GetComponent<Renderer>().material = P1Color;
                 else Piece.GetComponent<Renderer>().material = P2Color;
 
-                //dica
-                Tips(hit.collider.name);
+                //tabuleiro
+                board2table.refresh(hit.collider.name, p1turn);
+                board2table.print();
 
                 //coloca a peca na casa selecionada com uma distancia para visualizacao
                 Vector3 distance = new Vector3(0, 0, (float)-0.5);
@@ -59,13 +65,5 @@ public class OnClick : MonoBehaviour {
         }
     }
 
-    //D7 >> d8
-    void Tips(string piece) {
-        char row = piece[0]; //letra
-        char line = piece[1]; //numero
-        //line ++;
-        //GameObject.Find( row + line +"").GetComponent<Renderer>().material = TipColor;
-        GameObject.Find( row + "8").GetComponent<Renderer>().material = TipColor;
-        GameObject.Find(row + "1").GetComponent<Renderer>().material = TipColor;
-    }
+
 }
