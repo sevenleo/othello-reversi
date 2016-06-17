@@ -1,4 +1,4 @@
-namespace Damka
+/*namespace Damka
 {
     partial class Form1
     {
@@ -140,3 +140,4 @@ namespace Damka
     }
 }
 
+*/

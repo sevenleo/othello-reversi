@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -167,4 +167,4 @@ namespace Damka
             board.Draw(panel1, IsDrawHelp, 1);
         }
     }
-}
+}*/
