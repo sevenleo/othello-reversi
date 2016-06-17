@@ -13,10 +13,10 @@ public class OnClick : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        board2table.refresh("D4", true);
-        board2table.refresh("E5", true);
-        board2table.refresh("D5", false);
-        board2table.refresh("E4", false);
+        board2table.add("D4", true);
+        board2table.add("E5", true);
+        board2table.add("D5", false);
+        board2table.add("E4", false);
 
     }
 	
@@ -49,7 +49,7 @@ public class OnClick : MonoBehaviour {
                 else Piece.GetComponent<Renderer>().material = P2Color;
 
                 //tabuleiro
-                board2table.refresh(hit.collider.name, p1turn);
+                board2table.add(hit.collider.name, p1turn);
                 board2table.print();
 
                 //coloca a peca na casa selecionada com uma distancia para visualizacao

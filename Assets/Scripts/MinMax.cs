@@ -29,7 +29,7 @@ public class MinMax : MonoBehaviour {
 
         if (maximizingPlayer)   {
             bestValue = -99999999;
-            validmoves = tips(node);
+            validmoves = calculate_validmoves(node);
 
             foreach (char child in validmoves)          {
                   int newvalue = minimax(child, depth, false);
@@ -40,7 +40,7 @@ public class MinMax : MonoBehaviour {
         }
         else  {    // minimizingplayer
         bestValue= 99999999;
-            validmoves = tips(node);
+            validmoves = calculate_validmoves(node);
             foreach (char child in validmoves){
                 int newvalue = minimax(child, depth, true);
                 if (bestValue > newvalue);
@@ -51,7 +51,7 @@ public class MinMax : MonoBehaviour {
     }
 
 
-    char[] tips(int node){
+    char[] calculate_validmoves(int node){
         return new char[64];
     }
 
