@@ -24,7 +24,7 @@ public class OnClick : MonoBehaviour {
     void Update()
     {
         //dicas
-        board2table.validmoves(p1turn);
+        //board2table.validmoves(p1turn);
 
         if (Input.GetMouseButtonDown(0))
             CastRay();
