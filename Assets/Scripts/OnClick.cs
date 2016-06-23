@@ -13,10 +13,10 @@ public class OnClick : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        board2table.add("D4", true);
-        board2table.add("E5", true);
-        board2table.add("D5", false);
-        board2table.add("E4", false);
+        board_to_matrix.add("D4", true);
+        board_to_matrix.add("E5", true);
+        board_to_matrix.add("D5", false);
+        board_to_matrix.add("E4", false);
 
     }
 	
@@ -24,7 +24,7 @@ public class OnClick : MonoBehaviour {
     void Update()
     {
         //dicas
-        //board2table.validmoves(p1turn);
+        //board_to_matrix.validmoves(p1turn);
 
         if (Input.GetMouseButtonDown(0))
             CastRay();
@@ -49,8 +49,8 @@ public class OnClick : MonoBehaviour {
                 else Piece.GetComponent<Renderer>().material = P2Color;
 
                 //tabuleiro
-                board2table.add(hit.collider.name, p1turn);
-                board2table.print();
+                board_to_matrix.add(hit.collider.name, p1turn);
+                
 
                 //coloca a peca na casa selecionada com uma distancia para visualizacao
                 Vector3 distance = new Vector3(0, 0, (float)-0.5);
