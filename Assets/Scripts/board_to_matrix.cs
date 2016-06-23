@@ -58,7 +58,7 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-    public static void add(string name, bool player)
+    public static bool add(string name, bool player)
     {
         //converter linha e coluna para numero chat-2-int
         int row = name[0] -'A'; //letra
@@ -66,10 +66,59 @@ public class board_to_matrix : MonoBehaviour {
 
         row++;
         line++;
-        if (player) board[line, row] = 1;
-        else board[line, row] = -1;
+
+        if (verifymove(line, row, player))
+        {
+            if (player) board[line, row] = 1;
+            else board[line, row] = -1;
+            return true;
+        }
+        else return false;
 
         print();
     }
+
+
+
+    static bool verifymove(int line, int row, bool player)
+    {
+        if (line == row) return true;
+        return false;
+    }
+
+
+
+    /*
+     def valid_moves(self, color):
+    ret = []
+    for i in range(1, 9):
+      for j in range(1, 9):
+        if self.board[i][j] == Board.EMPTY:
+          for direction in Board.DIRECTIONS:
+            move = Move(i, j)
+            bracket = self._find_bracket(move, color, direction)
+            if bracket:
+              ret += [move]
+    return ret
+     */
+
+
+    /*
+       def _find_bracket(self, move, color, direction):
+    bracket = [move.x + direction[0], move.y + direction[1]]
+    bracket_color = self.board[bracket[0]][bracket[1]]
+
+    if bracket_color == color:
+      return None
+    opponent = self._opponent(color)
+    while bracket_color == opponent:
+      bracket = [bracket[0] + direction[0], bracket[1] + direction[1]]
+      bracket_color = self.board[bracket[0]][bracket[1]]
+
+    return None if self.board[bracket[0]][bracket[1]] in (Board.OUTER, Board.EMPTY) else bracket
+
+  def _opponent(self, color):
+    return Board.BLACK if color is Board.WHITE else Board.WHITE
+     */
 
 }

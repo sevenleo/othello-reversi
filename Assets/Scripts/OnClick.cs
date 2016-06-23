@@ -49,18 +49,18 @@ public class OnClick : MonoBehaviour {
                 else Piece.GetComponent<Renderer>().material = P2Color;
 
                 //tabuleiro
-                board_to_matrix.add(hit.collider.name, p1turn);
-                
+                if (board_to_matrix.add(hit.collider.name, p1turn))  {
 
-                //coloca a peca na casa selecionada com uma distancia para visualizacao
-                Vector3 distance = new Vector3(0, 0, (float)-0.5);
-                Instantiate(Piece, hit.collider.transform.position+distance, hit.collider.transform.rotation);
-                
-                //desabilita a opcao de jogar naquela casa novamente
-                hit.collider.enabled = false;
+                    //coloca a peca na casa selecionada com uma distancia para visualizacao
+                    Vector3 distance = new Vector3(0, 0, (float)-0.5);
+                    Instantiate(Piece, hit.collider.transform.position + distance, hit.collider.transform.rotation);
 
-                //muda o turno
-                p1turn = !p1turn;
+                    //desabilita a opcao de jogar naquela casa novamente
+                    hit.collider.enabled = false;
+
+                    //muda o turno
+                    p1turn = !p1turn;
+                }
             }
         }
     }
