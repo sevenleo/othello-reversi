@@ -1,15 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO;
+using System.Collections.Generic;
 
 public class board_to_matrix : MonoBehaviour {
 
+    List<int[,]> direction = new List<int[,]>();
+    public static int[] directions;
     public static int[,] board;
 
+    
     //PECAS BRANCAS = PLAYER1 = 1
     //PECAS PRETAS = PLAYER2 = -1
 
     void Start () {
+        /*
+        int[,] up;
+        up[0, 0] = 2;
+        direction.Add(up);
+        */
+
+        Debug.Log(direction.ToString());
+
         int i, j, k;
         board = new int[10, 10];
 
