@@ -2,26 +2,41 @@
 using System.Collections;
 using System.IO;
 using System.Collections.Generic;
+using System;
+
+public struct direction
+{
+    public int x, y;
+
+    public direction(int a, int b)
+    {
+        x = a;
+        y = b;
+    }
+}
+
 
 public class board_to_matrix : MonoBehaviour {
 
-    List<int[,]> direction = new List<int[,]>();
-    public static int[] directions;
+    
+    public static direction[] directions;
     public static int[,] board;
+
+    direction up = new direction(-1,0);
+    direction DOWN = new direction(1,0);
+    direction LEFT = new direction(0,-1);
+    direction RIGHT = new direction(0,1);
+    direction UP_RIGHT = new direction(-1,1);
+    direction DOWN_RIGHT = new direction(1,1);
+    direction DOWN_LEFT = new direction(1,-1);
+    direction UP_LEFT = new direction(-1,-1);
 
     
     //PECAS BRANCAS = PLAYER1 = 1
     //PECAS PRETAS = PLAYER2 = -1
 
     void Start () {
-        /*
-        int[,] up;
-        up[0, 0] = 2;
-        direction.Add(up);
-        */
-
-        Debug.Log(direction.ToString());
-
+    
         int i, j, k;
         board = new int[10, 10];
 
