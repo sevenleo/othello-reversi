@@ -140,6 +140,45 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
+    public static List<position> all_moves()
+    {
+        List<position> moves = new List<position>();
+
+        int i, j;
+        for (i = 1; i < 9; i++)
+        {
+            for (j = 1; j < 9; j++)
+            {
+                            moves.Add(new position(i,j));
+            }
+        }
+        return moves;
+    }
+
+
+    public static List<position> all_empty()
+    {
+        List<position> moves = new List<position>();
+
+        int i, j;
+        for (i = 1; i < 9; i++)
+        {
+            for (j = 1; j < 9; j++)
+            {
+                if (board[i, j] == 0)
+                    moves.Add(new position(i, j));
+            }
+        }
+        return moves;
+    }
+
+    public static List<position> not_valid_moves(bool player) {
+        List<position> not_valid_moves = board_to_matrix.all_moves();
+        not_valid_moves.RemoveAll(item => board_to_matrix.valid_moves(player).Contains(item));
+        return not_valid_moves;
+    }
+
+
     static bool verifymove(int line, int row, bool player)
     {
         if (valid_moves(player).Contains(new position(line, row))) return true;
@@ -150,29 +189,23 @@ public class board_to_matrix : MonoBehaviour {
     public static List<position> valid_moves(bool player)
     {
         List<position> moves = new List<position>();
-        /*
+        
         int i, j;
-        for (i = 0; i < 10; i++)
+        for (i = 1; i < 9; i++)
         {
-            for (j = 0; j < 10; j++)
+            for (j = 1; j < 9; j++)
             {
                 if (board[i, j] == 0) {
-                    
-                    directions.ForEach(d => {
-                        position? bracket;
-                        bracket = find_bracket(i, j, player, d);
-                        if (bracket.HasValue) {
-                            moves.Add((position)bracket);
-                        }
-                    });
-
+                        directions.ForEach(d => {
+                            position? bracket;
+                            bracket = find_bracket(i, j, player, d);
+                            if (bracket.HasValue) {
+                                moves.Add((position)bracket);
+                            }
+                        });
                 }
             }
-        }*/
-        moves.Add(new position(1, 1));
-        moves.Add(new position(8, 8));
-        moves.Add(new position(1, 8));
-        moves.Add(new position(8, 1));
+        }
         return moves;
     }
 
