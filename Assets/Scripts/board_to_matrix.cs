@@ -18,11 +18,11 @@ public struct direction
 
 public class board_to_matrix : MonoBehaviour {
 
-    
-    public static direction[] directions;
+    List<direction> directions = new List<direction>();
+    //public static direction[] directions;
     public static int[,] board;
 
-    direction up = new direction(-1,0);
+    direction UP = new direction(-1,0);
     direction DOWN = new direction(1,0);
     direction LEFT = new direction(0,-1);
     direction RIGHT = new direction(0,1);
@@ -32,11 +32,25 @@ public class board_to_matrix : MonoBehaviour {
     direction UP_LEFT = new direction(-1,-1);
 
     
+
     //PECAS BRANCAS = PLAYER1 = 1
     //PECAS PRETAS = PLAYER2 = -1
 
     void Start () {
-    
+
+        directions.Add(UP);
+        directions.Add(DOWN);
+        directions.Add(LEFT);
+        directions.Add(RIGHT);
+        directions.Add(UP_RIGHT);
+        directions.Add(DOWN_RIGHT);
+        directions.Add(DOWN_LEFT);
+        directions.Add(UP_LEFT);
+
+        Debug.Log(directions[0]);
+        Debug.Log(directions[0].x);
+
+
         int i, j, k;
         board = new int[10, 10];
 
