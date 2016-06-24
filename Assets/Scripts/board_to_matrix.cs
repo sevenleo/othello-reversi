@@ -103,6 +103,17 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
+    public static string matrix2board(position p)
+    {
+        char letra = '@'; //letra  ///////////////////////////////VERIFICAR SE O ASCII DO LINUX É IGUAL E ANTES DO A VEM O @
+        char numero = '0'; //numero
+
+        letra += (char)p.x ; //letra
+        numero += (char)p.y; //numero
+        return ""+letra+numero;
+    }
+
+
     public static bool add(string name, bool player)
     {
         
@@ -113,18 +124,19 @@ public class board_to_matrix : MonoBehaviour {
         row++;
         line++;
 
-        if (verifymove(line, row, player))
-        {
+       /* if (verifymove(line, row, player))
+        {*/
             if (player) board[line, row] = 1;
             else board[line, row] = -1;
             print();
+            Debug.Log(matrix2board( new position(line,row) ));
             return true;
-        }
+       /* }
         else
         {
             print();
             return false;
-        }
+        }*/
     }
 
 
@@ -135,8 +147,7 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-
-    static List<position> valid_moves(bool player)
+    public static List<position> valid_moves(bool player)
     {
         List<position> moves = new List<position>();
         /*
@@ -183,9 +194,26 @@ public class board_to_matrix : MonoBehaviour {
 
 
 
-    public static position find_bracket(int x, int y, bool player, position d)
+    public static position? find_bracket(int x, int y, bool player, position _direction)
     {
-        return new position(1, 1);
+        int color, opponent;
+        if (player) { color = 1; opponent = -1; }
+        else { color = -1; opponent = 1; }
+
+        position bracket = new position(x + _direction.x, y + _direction.y);
+        int bracket_color = board[bracket.x, bracket.y];
+
+        if (bracket_color == color) return null;
+        else
+        {
+            while (bracket_color == opponent)
+            {
+                bracket = new position(bracket.x + _direction.x, bracket.y + _direction.y);
+                bracket_color = board[bracket.x, bracket.y];
+            }
+            if (board[bracket.x, bracket.y] == 0) return null;
+            else return bracket;
+        }
     }
 
 

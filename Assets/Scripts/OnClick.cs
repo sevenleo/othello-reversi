@@ -24,7 +24,7 @@ public class OnClick : MonoBehaviour {
     void Update()
     {
         //dicas
-        //board_to_matrix.validmoves(p1turn);
+        //board_to_matrix.valid_moves(p1turn).ForEach(item => )
 
         if (Input.GetMouseButtonDown(0))
             CastRay();
