@@ -170,9 +170,9 @@ public class board_to_matrix : MonoBehaviour {
             }
         }*/
         moves.Add(new position(1, 1));
-        moves.Add(new position(2, 2));
-        moves.Add(new position(1, 2));
-        moves.Add(new position(2, 1));
+        moves.Add(new position(8, 8));
+        moves.Add(new position(1, 8));
+        moves.Add(new position(8, 1));
         return moves;
     }
 

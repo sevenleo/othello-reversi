@@ -24,7 +24,9 @@ public class OnClick : MonoBehaviour {
     void Update()
     {
         //dicas
-        //board_to_matrix.valid_moves(p1turn).ForEach(item => )
+        board_to_matrix.valid_moves(p1turn).ForEach(item =>
+            GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = TipColor
+        );
 
         if (Input.GetMouseButtonDown(0))
             CastRay();
