@@ -46,6 +46,11 @@ public class board_to_matrix : MonoBehaviour {
         
         board = new int[10, 10];
 
+        board[4, 4] = 1;
+        board[4, 5] = 1;
+        board[5, 4] = -1;
+        board[5, 5] = -1;
+
         directions.Add(UP);
         directions.Add(DOWN);
         directions.Add(LEFT);
@@ -83,8 +88,6 @@ public class board_to_matrix : MonoBehaviour {
     }
 	
 	void Update () {
-
-
     }
 
     public static void print()
@@ -100,6 +103,8 @@ public class board_to_matrix : MonoBehaviour {
             System.IO.File.AppendAllText("board.txt", "\n");
 
         }
+
+        valid_moves(OnClick.p1turn).ForEach(item => board[item.x,item.y]=99);
     }
 
 
@@ -114,6 +119,23 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
+    public static void startwith(string name, bool player)
+    {
+
+        //converter linha e coluna para numero chat-2-int
+        int row = name[0] - 'A'; //letra
+        int line = name[1] - '1'; //numero
+
+        row++;
+        line++;
+
+        if (player) board[line, row] = 1;
+        else board[line, row] = -1;
+        print();
+        
+  
+    }
+
     public static bool add(string name, bool player)
     {
         
@@ -124,19 +146,17 @@ public class board_to_matrix : MonoBehaviour {
         row++;
         line++;
 
-       /* if (verifymove(line, row, player))
-        {*/
+        if (verifymove(line, row, player))        {
             if (player) board[line, row] = 1;
             else board[line, row] = -1;
             print();
-            Debug.Log(matrix2board( new position(line,row) ));
             return true;
-       /* }
+        }
         else
         {
             print();
             return false;
-        }*/
+        }
     }
 
 
@@ -172,6 +192,7 @@ public class board_to_matrix : MonoBehaviour {
         return moves;
     }
 
+
     public static List<position> not_valid_moves(bool player) {
         List<position> not_valid_moves = board_to_matrix.all_moves();
         not_valid_moves.RemoveAll(item => board_to_matrix.valid_moves(player).Contains(item));
@@ -196,11 +217,17 @@ public class board_to_matrix : MonoBehaviour {
             for (j = 1; j < 9; j++)
             {
                 if (board[i, j] == 0) {
-                        directions.ForEach(d => {
+                        directions.ForEach(direction => {
                             position? bracket;
-                            bracket = find_bracket(i, j, player, d);
+                            bracket = find_bracket(i, j, player, direction);
                             if (bracket.HasValue) {
                                 moves.Add((position)bracket);
+
+                                /**
+                                 position valid_bracket = (position)bracket;
+                                Debug.Log(valid_bracket.toString());
+                                moves.Add(valid_bracket); 
+                                 */
                             }
                         });
                 }
@@ -208,8 +235,6 @@ public class board_to_matrix : MonoBehaviour {
         }
         return moves;
     }
-
-
 
     /*
      def valid_moves(self, color):
@@ -227,13 +252,13 @@ public class board_to_matrix : MonoBehaviour {
 
 
 
-    public static position? find_bracket(int x, int y, bool player, position _direction)
+    public static position? find_bracket(int x, int y, bool player, position direction)
     {
         int color, opponent;
         if (player) { color = 1; opponent = -1; }
         else { color = -1; opponent = 1; }
 
-        position bracket = new position(x + _direction.x, y + _direction.y);
+        position bracket = new position(x + direction.x, y + direction.y);
         int bracket_color = board[bracket.x, bracket.y];
 
         if (bracket_color == color) return null;
@@ -241,14 +266,14 @@ public class board_to_matrix : MonoBehaviour {
         {
             while (bracket_color == opponent)
             {
-                bracket = new position(bracket.x + _direction.x, bracket.y + _direction.y);
+                bracket = new position(bracket.x + direction.x, bracket.y + direction.y);
                 bracket_color = board[bracket.x, bracket.y];
             }
             if (board[bracket.x, bracket.y] == 0) return null;
             else return bracket;
+            
         }
     }
-
 
     /*
        def _find_bracket(self, move, color, direction):

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class OnClick : MonoBehaviour {
 
     
-    bool p1turn = true;
+    public static bool p1turn = true;
     public Material[,] Materialboard = new Material[10, 10];
     public GameObject Piece;
     public Material P1Color;
@@ -16,34 +16,37 @@ public class OnClick : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        int i, j;
-        board_to_matrix.add("D4", true);
-        board_to_matrix.add("E5", true);
-        board_to_matrix.add("D5", false);
-        board_to_matrix.add("E4", false);
 
-        
-        for (i = 1; i < 9; i++)
-            for (j = 1; j < 9; j++)
+        //insere as pecas iniciais
+        board_to_matrix.startwith("D4", true);
+        board_to_matrix.startwith("E5", true);
+        board_to_matrix.startwith("D5", false);
+        board_to_matrix.startwith("E4", false);
+
+        //guarda as cores/materiais de cada bloco do tabuleiro
+        for (int i = 1; i < 9; i++)
+            for (int j = 1; j < 9; j++)
                 Materialboard[i, j] = GameObject.Find (board_to_matrix.matrix2board(new position(i,j))).GetComponent<Renderer>().material;
 
 
     }
-	
-	// Update is called once per frame
+
+
+
     void Update()
     {
-        //dicas
 
-        
+        //colore as jogadas validas com a tipcolor
         board_to_matrix.valid_moves(p1turn).ForEach(item =>
             GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = TipColor
         );
 
+        //remove a tipcolor do tabuleiro colorindo com as cores originais do tabuleiro (preto/branco) salvas na matriz 
         board_to_matrix.not_valid_moves(p1turn).ForEach(item =>
             GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = Materialboard[item.x,item.y]
         );
 
+        //click no tabuleiro
         if (Input.GetMouseButtonDown(0))
             CastRay();
         
@@ -51,35 +54,39 @@ public class OnClick : MonoBehaviour {
     }
 
     void CastRay()    {
+        
+        
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
+
+        //raio que vai da camera ate a posicao do mouse
         if (Physics.Raycast(ray, out hit, 100))
         {
-            //Debug.DrawLine(ray.origin, hit.point);
-            //Debug.Log("Hit object: " + hit.collider.name);
-            //GameObject.Find("NOME").GetComponent<Renderer>().enabled = false;
-
+            //se o objeto de colisao for o tabuleiro
             if (hit.collider.tag == "board")  {
 
          
-                //nomeia e colore a nova peca que sera criaca
+                //nomeia e colore a nova peca que sera criada
                 Piece.name = "Piece_" + hit.collider.name;
                 if (p1turn) Piece.GetComponent<Renderer>().material = P1Color;
                 else Piece.GetComponent<Renderer>().material = P2Color;
 
-                //tabuleiro
-                if (board_to_matrix.add(hit.collider.name, p1turn))  {
+                //tenta adicionar a peca ao tabuleiro add() é booleana
+                if (board_to_matrix.add(hit.collider.name, p1turn))
+                {
 
                     //coloca a peca na casa selecionada com uma distancia para visualizacao
                     Vector3 distance = new Vector3(0, 0, (float)-0.5);
                     Instantiate(Piece, hit.collider.transform.position + distance, hit.collider.transform.rotation);
 
-                    //desabilita a opcao de jogar naquela casa novamente
+                    //desabilita o colisor/desabilita a jogada naquela casa
+                    //novos cliques nao farao efeito
                     hit.collider.enabled = false;
 
                     //muda o turno
                     p1turn = !p1turn;
                 }
+                else Debug.Log("Jogada inválida");
             }
         }
     }
