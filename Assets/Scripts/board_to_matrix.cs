@@ -26,6 +26,7 @@ public class board_to_matrix : MonoBehaviour {
     
     //public static direction[] directions;
     public static int[,] board;
+    public static bool Turn = true;
 
     //Direcoes
     public static List<position> directions = new List<position>();
@@ -38,9 +39,9 @@ public class board_to_matrix : MonoBehaviour {
     position DOWN_LEFT = new position(1,-1);
     position UP_LEFT = new position(-1,-1);
 
-    //PECAS BRANCAS = PLAYER1 = 1
-    //PECAS PRETAS = PLAYER2 = -1
-    
+    //PECAS BRANCAS = TurnPlayer1 = 1
+    //PECAS PRETAS = TurnPlayer2 = -1
+
 
     void Start () {
         
@@ -92,15 +93,19 @@ public class board_to_matrix : MonoBehaviour {
 
     public static void print()
     {
-        System.IO.File.Delete("board.txt");
+        File.Delete("board.txt");
 
         for (int line = 9; line >= 0; line--)
         {
             for (int row = 0; row < 10; row++)
             {
-                System.IO.File.AppendAllText("board.txt", "\t" + board[line, row]);
+                if ( valid_moves().Contains(new position(line, row)) )
+                    File.AppendAllText("board.txt", "\t" + "[]");
+                else
+                    File.AppendAllText("board.txt", "\t" + board[line, row]);
+                
             }
-            System.IO.File.AppendAllText("board.txt", "\n");
+            File.AppendAllText("board.txt", "\n");
 
         }
 
@@ -119,7 +124,7 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-    public static void startwith(string name, bool player)
+    public static void startwith(string name,bool player)
     {
 
         //converter linha e coluna para numero chat-2-int
@@ -136,7 +141,7 @@ public class board_to_matrix : MonoBehaviour {
   
     }
 
-    public static bool add(string name, bool player)
+    public static bool add(string name)
     {
         
         //converter linha e coluna para numero chat-2-int
@@ -146,10 +151,11 @@ public class board_to_matrix : MonoBehaviour {
         row++;
         line++;
 
-        if (verifymove(line, row, player))        {
-            if (player) board[line, row] = 1;
+        if (verifymove(line, row))        {
+            if (Turn) board[line, row] = 1;
             else board[line, row] = -1;
             print();
+            Turn = !Turn;
             return true;
         }
         else
@@ -193,21 +199,21 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-    public static List<position> not_valid_moves(bool player) {
+    public static List<position> not_valid_moves() {
         List<position> not_valid_moves = board_to_matrix.all_moves();
-        not_valid_moves.RemoveAll(item => board_to_matrix.valid_moves(player).Contains(item));
+        not_valid_moves.RemoveAll(item => board_to_matrix.valid_moves().Contains(item));
         return not_valid_moves;
     }
 
 
-    static bool verifymove(int line, int row, bool player)
+    static bool verifymove(int line, int row)
     {
-        if (valid_moves(player).Contains(new position(line, row))) return true;
+        if (valid_moves().Contains(new position(line, row))) return true;
         else return false;
     }
 
 
-    public static List<position> valid_moves(bool player)
+    public static List<position> valid_moves()
     {
         List<position> moves = new List<position>();
         
@@ -219,7 +225,7 @@ public class board_to_matrix : MonoBehaviour {
                 if (board[i, j] == 0) {
                         directions.ForEach(direction => {
                             position? bracket;
-                            bracket = find_bracket(i, j, player, direction);
+                            bracket = find_bracket(i, j, direction);
                             if (bracket.HasValue) {
                                 moves.Add(new position(i,j));
                             }
@@ -246,10 +252,10 @@ public class board_to_matrix : MonoBehaviour {
 
 
 
-    public static position? find_bracket(int x, int y, bool player, position direction)
+    public static position? find_bracket(int x, int y, position direction)
     {
         int color, opponent;
-        if (player) { color = 1; opponent = -1; }
+        if (Turn) { color = 1; opponent = -1; }
         else { color = -1; opponent = 1; }
 
         position bracket = new position(x + direction.x, y + direction.y);

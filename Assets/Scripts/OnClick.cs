@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class OnClick : MonoBehaviour {
 
     
-    public static bool p1turn = true;
+    
     public Material[,] Materialboard = new Material[10, 10];
     public GameObject Piece;
     public Material P1Color;
@@ -37,7 +37,7 @@ public class OnClick : MonoBehaviour {
     void Update()
     {
         //indica qual o jogador da vez
-        if (p1turn) {
+        if (board_to_matrix.Turn) {
             GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().fontStyle = FontStyle.Bold;
             GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().fontStyle = FontStyle.Normal;
         }
@@ -47,12 +47,12 @@ public class OnClick : MonoBehaviour {
         }
 
         //colore as jogadas validas com a tipcolor
-        board_to_matrix.valid_moves(p1turn).ForEach(item =>
+        board_to_matrix.valid_moves().ForEach(item =>
             GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = TipColor
         );
 
         //remove a tipcolor do tabuleiro colorindo com as cores originais do tabuleiro (preto/branco) salvas na matriz 
-        board_to_matrix.not_valid_moves(p1turn).ForEach(item =>
+        board_to_matrix.not_valid_moves().ForEach(item =>
             GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = Materialboard[item.x,item.y]
         );
 
@@ -78,11 +78,11 @@ public class OnClick : MonoBehaviour {
          
                 //nomeia e colore a nova peca que sera criada
                 Piece.name = "Piece_" + hit.collider.name;
-                if (p1turn) Piece.GetComponent<Renderer>().material = P1Color;
+                if (board_to_matrix.Turn) Piece.GetComponent<Renderer>().material = P1Color;
                 else Piece.GetComponent<Renderer>().material = P2Color;
 
                 //tenta adicionar a peca ao tabuleiro add() é booleana
-                if (board_to_matrix.add(hit.collider.name, p1turn))
+                if (board_to_matrix.add(hit.collider.name))
                 {
 
                     //coloca a peca na casa selecionada com uma distancia para visualizacao
@@ -93,8 +93,6 @@ public class OnClick : MonoBehaviour {
                     //novos cliques nao farao efeito
                     hit.collider.enabled = false;
 
-                    //muda o turno
-                    p1turn = !p1turn;
                 }
                 else Debug.Log("Jogada inválida");
             }
