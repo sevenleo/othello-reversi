@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,7 +12,7 @@ public class OnClick : MonoBehaviour {
     public Material P1Color;
     public Material P2Color;
     public Material TipColor;
-
+    public Canvas canvas;
     
 
     // Use this for initialization
@@ -35,6 +36,15 @@ public class OnClick : MonoBehaviour {
 
     void Update()
     {
+        //indica qual o jogador da vez
+        if (p1turn) {
+            GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().fontStyle = FontStyle.Bold;
+            GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().fontStyle = FontStyle.Normal;
+        }
+        else {
+            GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().fontStyle = FontStyle.Normal;
+            GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().fontStyle = FontStyle.Bold;
+        }
 
         //colore as jogadas validas com a tipcolor
         board_to_matrix.valid_moves(p1turn).ForEach(item =>

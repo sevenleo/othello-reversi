@@ -104,7 +104,7 @@ public class board_to_matrix : MonoBehaviour {
 
         }
 
-        valid_moves(OnClick.p1turn).ForEach(item => board[item.x,item.y]=99);
+        
     }
 
 
@@ -221,13 +221,7 @@ public class board_to_matrix : MonoBehaviour {
                             position? bracket;
                             bracket = find_bracket(i, j, player, direction);
                             if (bracket.HasValue) {
-                                moves.Add((position)bracket);
-
-                                /**
-                                 position valid_bracket = (position)bracket;
-                                Debug.Log(valid_bracket.toString());
-                                moves.Add(valid_bracket); 
-                                 */
+                                moves.Add(new position(i,j));
                             }
                         });
                 }
@@ -274,6 +268,7 @@ public class board_to_matrix : MonoBehaviour {
             
         }
     }
+
 
     /*
        def _find_bracket(self, move, color, direction):
