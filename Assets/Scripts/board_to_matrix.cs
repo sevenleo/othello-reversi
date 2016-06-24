@@ -4,39 +4,47 @@ using System.IO;
 using System.Collections.Generic;
 using System;
 
-public struct direction
+public struct position
 {
     public int x, y;
 
-    public direction(int a, int b)
+    public position(int a, int b)
     {
         x = a;
         y = b;
+    }
+
+    public string toString()
+    {
+        return this + ": " + this.x + " " + this.y;
     }
 }
 
 
 public class board_to_matrix : MonoBehaviour {
 
-    List<direction> directions = new List<direction>();
+    
     //public static direction[] directions;
     public static int[,] board;
 
-    direction UP = new direction(-1,0);
-    direction DOWN = new direction(1,0);
-    direction LEFT = new direction(0,-1);
-    direction RIGHT = new direction(0,1);
-    direction UP_RIGHT = new direction(-1,1);
-    direction DOWN_RIGHT = new direction(1,1);
-    direction DOWN_LEFT = new direction(1,-1);
-    direction UP_LEFT = new direction(-1,-1);
-
-    
+    //Direcoes
+    public static List<position> directions = new List<position>();
+    position UP = new position(-1,0);
+    position DOWN = new position(1,0);
+    position LEFT = new position(0,-1);
+    position RIGHT = new position(0,1);
+    position UP_RIGHT = new position(-1,1);
+    position DOWN_RIGHT = new position(1,1);
+    position DOWN_LEFT = new position(1,-1);
+    position UP_LEFT = new position(-1,-1);
 
     //PECAS BRANCAS = PLAYER1 = 1
     //PECAS PRETAS = PLAYER2 = -1
+    
 
     void Start () {
+        
+        board = new int[10, 10];
 
         directions.Add(UP);
         directions.Add(DOWN);
@@ -47,12 +55,9 @@ public class board_to_matrix : MonoBehaviour {
         directions.Add(DOWN_LEFT);
         directions.Add(UP_LEFT);
 
-        Debug.Log(directions[0]);
-        Debug.Log(directions[0].x);
 
-
-        int i, j, k;
-        board = new int[10, 10];
+        int i, j;
+        
 
         for (i = 0; i < 10; i++)
         {
@@ -63,7 +68,7 @@ public class board_to_matrix : MonoBehaviour {
         }
 
 
-        //SE O VALOR DO OUTER FOR IGUAL O EMPTY SÓ PRECISA ITERAR 1 VEZ, SENAO DESCOMENTAR
+        //ENQUANTO O VALOR DO OUTER FOR IGUAL O EMPTY SÓ PRECISA ITERAR 1 VEZ, SENAO DESCOMENTAR
         /*
         for (i = 1; i < 9; i++)
         {
@@ -77,11 +82,10 @@ public class board_to_matrix : MonoBehaviour {
 
     }
 	
-	// Update is called once per frame
 	void Update () {
-	
-	}
 
+
+    }
 
     public static void print()
     {
@@ -101,6 +105,7 @@ public class board_to_matrix : MonoBehaviour {
 
     public static bool add(string name, bool player)
     {
+        
         //converter linha e coluna para numero chat-2-int
         int row = name[0] -'A'; //letra
         int line = name[1] - '1'; //numero
@@ -112,19 +117,52 @@ public class board_to_matrix : MonoBehaviour {
         {
             if (player) board[line, row] = 1;
             else board[line, row] = -1;
+            print();
             return true;
         }
-        else return false;
-
-        print();
+        else
+        {
+            print();
+            return false;
+        }
     }
-
 
 
     static bool verifymove(int line, int row, bool player)
     {
-        if (line == row) return true;
-        return false;
+        if (valid_moves(player).Contains(new position(line, row))) return true;
+        else return false;
+    }
+
+
+
+    static List<position> valid_moves(bool player)
+    {
+        List<position> moves = new List<position>();
+        /*
+        int i, j;
+        for (i = 0; i < 10; i++)
+        {
+            for (j = 0; j < 10; j++)
+            {
+                if (board[i, j] == 0) {
+                    
+                    directions.ForEach(d => {
+                        position? bracket;
+                        bracket = find_bracket(i, j, player, d);
+                        if (bracket.HasValue) {
+                            moves.Add((position)bracket);
+                        }
+                    });
+
+                }
+            }
+        }*/
+        moves.Add(new position(1, 1));
+        moves.Add(new position(2, 2));
+        moves.Add(new position(1, 2));
+        moves.Add(new position(2, 1));
+        return moves;
     }
 
 
@@ -142,6 +180,13 @@ public class board_to_matrix : MonoBehaviour {
               ret += [move]
     return ret
      */
+
+
+
+    public static position find_bracket(int x, int y, bool player, position d)
+    {
+        return new position(1, 1);
+    }
 
 
     /*

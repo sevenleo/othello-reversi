@@ -43,6 +43,7 @@ public class OnClick : MonoBehaviour {
 
             if (hit.collider.tag == "board")  {
 
+         
                 //nomeia e colore a nova peca que sera criaca
                 Piece.name = "Piece_" + hit.collider.name;
                 if (p1turn) Piece.GetComponent<Renderer>().material = P1Color;
