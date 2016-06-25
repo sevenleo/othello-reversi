@@ -47,9 +47,9 @@ public class OnClick : MonoBehaviour {
         }
 
         //colore as jogadas validas com a tipcolor
-        board_to_matrix.valid_moves().ForEach(item =>
-            GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = TipColor
-        );
+        //board_to_matrix.valid_moves().ForEach(item =>
+        //    GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = TipColor
+        //);
 
         //remove a tipcolor do tabuleiro colorindo com as cores originais do tabuleiro (preto/branco) salvas na matriz 
         board_to_matrix.not_valid_moves().ForEach(item =>

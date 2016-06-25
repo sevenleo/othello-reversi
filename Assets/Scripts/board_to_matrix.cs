@@ -94,6 +94,7 @@ public class board_to_matrix : MonoBehaviour {
     public static void print()
     {
         File.Delete("board.txt");
+        File.AppendAllText("board.txt", "Turno:" + (Turn? "P1" : "P2") + "\n");
 
         for (int line = 9; line >= 0; line--)
         {
@@ -154,8 +155,9 @@ public class board_to_matrix : MonoBehaviour {
         if (verifymove(line, row))        {
             if (Turn) board[line, row] = 1;
             else board[line, row] = -1;
-            print();
             Turn = !Turn;
+            print();
+            
             return true;
         }
         else
