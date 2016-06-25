@@ -9,12 +9,12 @@ public class OnClick : MonoBehaviour {
     
     
     public Material[,] Materialboard = new Material[10, 10];
+    List<position> changed= new List<position>();
     public GameObject Piece;
     public Material P1Color;
     public Material P2Color;
     public Material TipColor;
     public Canvas canvas;
-    int plays = 60;
     int[] scores = new int[3];
 
     // Use this for initialization
@@ -98,8 +98,11 @@ public class OnClick : MonoBehaviour {
                 if (board_to_matrix.Turn) Piece.GetComponent<Renderer>().material = P1Color;
                 else Piece.GetComponent<Renderer>().material = P2Color;
 
+                //limpa pecas que devem ser limpas
+                //changed = new List<position>();
+
                 //tenta adicionar a peca ao tabuleiro add() é booleana
-                if (board_to_matrix.add(hit.collider.name))
+                if (board_to_matrix.add(hit.collider.name,changed) )
                 {
                     //coloca a peca na casa selecionada com uma distancia para visualizacao
                     Vector3 distance = new Vector3(0, 0, (float)-0.5);
@@ -108,8 +111,17 @@ public class OnClick : MonoBehaviour {
                     //desabilita o colisor/desabilita a jogada naquela casa
                     //novos cliques nao farao efeito
                     hit.collider.enabled = false;
-
+                    
+                    //mostra o placar
                     board_to_matrix.playersscore(scores);
+
+                    //RECOLORIR PEÇAS
+                    changed.ForEach(item=> {
+                        //Piece_D6(Clone)
+                        Debug.Log("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)");
+                        GameObject.Find("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)").GetComponent<Renderer>().material = (board_to_matrix.Turn? P1Color: P2Color);
+                        changed.Remove(item);
+                    });
 
                     //diminue o numero de jogadas 
                     //if (board_to_matrix.all_empty().Count == 0) essa funcao é custosa demais

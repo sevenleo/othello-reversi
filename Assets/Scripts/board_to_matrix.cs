@@ -115,7 +115,6 @@ public class board_to_matrix : MonoBehaviour {
                     File.AppendAllText("board.txt", "\t" + "[]");
                 else
                     File.AppendAllText("board.txt", "\t" + board[line, row]);
-                
             }
             File.AppendAllText("board.txt", "\n");
 
@@ -149,7 +148,8 @@ public class board_to_matrix : MonoBehaviour {
 
     public static string matrix2board(position p)
     {
-        char letra = '@'; //letra  ///////////////////////////////VERIFICAR SE O ASCII DO LINUX É IGUAL E ANTES DO A VEM O @
+        ////////// VERIFICAR SE O ASCII DO LINUX É IGUAL E ANTES DO A VEM O @
+        char letra = '@'; //letra  
         char numero = '0'; //numero
 
         letra += (char)p.y ; //letra
@@ -176,7 +176,7 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-    public static bool add(string name)
+    public static bool add(string name, List<position> changed)
     {
         
         //converter linha e coluna para numero chat-2-int
@@ -190,8 +190,8 @@ public class board_to_matrix : MonoBehaviour {
             if (Turn) board[line, row] = 1;
             else board[line, row] = -1;
             Turn = !Turn;
+            reverse(line, row, changed);
             print();
-            reverse(line, row);
             return true;
         }
         else
@@ -297,27 +297,38 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-    public static void reverse(int i, int j)
+    public static void reverse(int i, int j, List<position> changed)
     {
         directions.ForEach(direction => {
-            make_flips(i, j, direction);
+            make_flips(i, j, direction,changed);
         });
     }
 
 
-    public static void make_flips(int x,int y, position direction)
- {
-        position? bracket = find_bracket(x, y, direction);
+    public static void make_flips(int x,int y, position direction, List<position> changed)
+    {
+        
+        /*position? bracket = find_bracket(x, y, direction);
+        
         if (bracket.HasValue)
         {
+            Debug.Log("bracket (YES YES) founded");
             position square = new position(x + direction.x ,  y + direction.y);
             while (square.equals((position)bracket))
             {
                 board[square.x, square.y] = (Turn ? 1 : -1);
                 square = new position(square.x + direction.x, square.y + direction.y);
             }
-        }
- }
+            
+        }else Debug.Log("bracket NOT founded");
+        */
+
+        board[4,4] = (Turn ? 1 : -1); changed.Add(new position(4,4));
+        board[5,5] = (Turn ? 1 : -1); changed.Add(new position(4,5));
+        board[4,5] = (Turn ? 1 : -1); changed.Add(new position(5,5));
+        board[5,4] = (Turn ? 1 : -1); changed.Add(new position(5,4));
+
+    }
 
     /*
     def _make_flips(self, move, color, direction):
