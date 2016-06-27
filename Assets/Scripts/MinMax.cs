@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MinMax : MonoBehaviour {
 
@@ -13,34 +14,34 @@ public class MinMax : MonoBehaviour {
 	
 	}
 
-
+    /*
     
-    int minimax(char node, int depth, bool maximizingPlayer)    {
+    position minimax(position move, int[,] board, int depth, bool maximizingPlayer)    {
         //node nao eh char, coloquei soh pra compilar
 
+        List<position> validmoves;
         int bestValue = 0;
-        char[] validmoves;
-        validmoves = new char[64];
 
         if (depth == 0)
-            return node;
+            return move;
         else
             depth -= 1;
 
-        if (maximizingPlayer)   {
+        if (board_to_matrix.Turn)   {
             bestValue = -(System.Int32.MaxValue);
-            validmoves = calculate_validmoves(node);
+            validmoves = calc_validmoves(move,board);
 
-            foreach (char child in validmoves)          {
-                  int newvalue = minimax(child, depth, false);
+            validmoves.ForEach(child => { 
+                position newvalue = minimax(child, board, depth, false);
                 if (bestValue < newvalue);
                 bestValue =newvalue;
-            }
+            });
             return bestValue;
         }
+
         else  {    // minimizingplayer
         bestValue= System.Int32.MaxValue;
-            validmoves = calculate_validmoves(node);
+            validmoves = calculate_validmoves(move);
             foreach (char child in validmoves){
                 int newvalue = minimax(child, depth, true);
                 if (bestValue > newvalue);
@@ -48,69 +49,83 @@ public class MinMax : MonoBehaviour {
             }
             return bestValue;
         }
+
     }
 
 
-    char[] calculate_validmoves(int node){
-        return new char[64];
+    */
+
+    List<position> calc_validmoves(position move, int[,]board){
+        List<position> moves = new List<position>();
+        return moves;
     }
 
+    int CalculateBoardValue(int[,] board)
+    {
+        int value = 0;
 
-
-
-    /*
-     
-      def generate_moves(self):
-        """Return the list of legal moves where a move is a tuple.
-
-        It returns a list of moves, if the game is not over. Otherwise, it
-        returns an empty list. Note that a list with the singleton None is
-        possible if the current player has no move but the game is not over.
-        None is actually a valid move which rotates the turn to the other
-        player and is only allowed if the current player has no legitimate
-        move."""
-        
-        opp = -1 * self.player # opponent player num
-        
-        # A legal move is an empty square, s.t.
-        # there is a contiguous straight line from this square consisting of
-        # opponent squares followed by player's square.
-        moves = []
-        for i in range_size:
-            for j in range_size:
-                # find an empty square
-                if self.board[i][j] != 0:
-                    continue
-                # look in every direction
-                for dir in directions:
-                    t = tuple_in_dir((i,j), dir)
-                    # till you find an opponent piece
-                    if (not tuple_valid(t)) or (self.board[t[0]][t[1]] != opp):
-                        continue
-                    # now, skip all the opponent pieces
-                    while self.board[t[0]][t[1]] == opp:
-                        t = tuple_in_dir(t, dir)
-                        if not tuple_valid(t):
-                            break
-                    else:
-                        # finally if we get one of our own pieces then
-                        # make the move
-                        if self.get_color(t) == self.player:
-                            moves.append((i,j))
-                            # no point looking in any other direction
-                            break
-
-        # if we don't have a move and the game is not over then
-        # return the None move or "no move."
-        if not moves and not self.terminal_test():
-            moves = [None]
-            
-        return moves 
-     
-     */
-
-
-
-
+        for (int line = 9; line >= 0; line--)
+        {
+            for (int row = 0; row < 10; row++)
+            {
+                if (board[line, row] == 1) value ++;
+                if (board[line, row] == -1) value--;
+            }
+        }
+        return value;
+    }
 
 }
+
+
+/*
+Minimax Pseudocode
+
+alpaBetaMinimax(node, alpha, beta)
+
+    
+   #Returns best score for the player associated with the given node.
+   #Also sets the variable bestMove to the move associated with the
+   #best score at the root node.  
+   
+
+   # check if at search bound
+   if node is at depthLimit
+      return staticEval(node)
+
+   # check if leaf
+children = successors(node)
+   if len(children) == 0
+      if node is root
+         bestMove = []
+      return staticEval(node)
+
+   # initialize bestMove
+   if node is root
+      bestMove = operator of first child
+      # check if there is only one option
+      if len(children) == 1
+         return None
+
+   if it is MAX's turn to move
+      for child in children
+         result = alphaBetaMinimax(child, alpha, beta)
+         if result > alpha
+            alpha = result
+            if node is root
+               bestMove = operator of child
+         if alpha >= beta
+            return alpha
+      return alpha
+
+   if it is MIN's turn to move
+      for child in children
+         result = alphaBetaMinimax(child, alpha, beta)
+         if result<beta
+            beta = result
+            if node is root
+               bestMove = operator of child
+         if beta <= alpha
+            return beta
+      return beta
+*/
