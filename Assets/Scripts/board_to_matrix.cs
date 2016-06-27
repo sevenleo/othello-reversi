@@ -35,6 +35,11 @@ public class board_to_matrix : MonoBehaviour {
     public static int[,] board;
     public static bool Turn = true;
 
+    //quem esta jogando
+    public static bool p1 = false;
+    public static bool p2 = false;
+
+
     //Direcoes
     public static List<position> directions = new List<position>();
     position UP = new position(-1,0);
@@ -308,7 +313,7 @@ public class board_to_matrix : MonoBehaviour {
     public static void make_flips(int x,int y, position direction, List<position> changed)
     {
         
-        /*position? bracket = find_bracket(x, y, direction);
+        position? bracket = find_bracket(x, y, direction);
         
         if (bracket.HasValue)
         {
@@ -321,13 +326,13 @@ public class board_to_matrix : MonoBehaviour {
             }
             
         }else Debug.Log("bracket NOT founded");
-        */
+        /*
 
         board[4,4] = (Turn ? 1 : -1); changed.Add(new position(4,4));
         board[5,5] = (Turn ? 1 : -1); changed.Add(new position(4,5));
         board[4,5] = (Turn ? 1 : -1); changed.Add(new position(5,5));
         board[5,4] = (Turn ? 1 : -1); changed.Add(new position(5,4));
-
+        */
     }
 
     /*

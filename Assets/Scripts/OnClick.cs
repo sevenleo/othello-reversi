@@ -70,13 +70,37 @@ public class OnClick : MonoBehaviour {
 
         //remove a tipcolor do tabuleiro colorindo com as cores originais do tabuleiro (preto/branco) salvas na matriz 
         board_to_matrix.not_valid_moves().ForEach(item =>
-            GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = Materialboard[item.x,item.y]
+            GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = Materialboard[item.x, item.y]
         );
 
-        //click no tabuleiro
-        if (Input.GetMouseButtonDown(0))
-            CastRay();
+        //p1-humano
+        if (board_to_matrix.p1 == true && board_to_matrix.Turn)
+        {
+            //click no tabuleiro
+            if (Input.GetMouseButtonDown(0))
+                CastRay();
+        }
+        //p1-pc
+        else if (board_to_matrix.p1 == false && board_to_matrix.Turn)
+        {
+            Play( PC_Random_Player.playing() );
+        }
+        //p2-humano
+        if (board_to_matrix.p2 == true && !board_to_matrix.Turn)
+        {
+            //click no tabuleiro
+            if (Input.GetMouseButtonDown(0))
+                CastRay();
+        }
+        //p2-pc
+        else if (board_to_matrix.p2 == false && !board_to_matrix.Turn)
+        {
+            Play( PC_Random_Player.playing() );
+        }
         
+
+
+
 
     }
 
@@ -90,59 +114,69 @@ public class OnClick : MonoBehaviour {
         if (Physics.Raycast(ray, out hit, 100))
         {
             //se o objeto de colisao for o tabuleiro
-            if (hit.collider.tag == "board")  {
-
-         
-                //nomeia e colore a nova peca que sera criada
-                Piece.name = "Piece_" + hit.collider.name;
-                if (board_to_matrix.Turn) Piece.GetComponent<Renderer>().material = P1Color;
-                else Piece.GetComponent<Renderer>().material = P2Color;
-
-                //limpa pecas que devem ser limpas
-                //changed = new List<position>();
-
-                //tenta adicionar a peca ao tabuleiro add() é booleana
-                if (board_to_matrix.add(hit.collider.name,changed) )
-                {
-                    //coloca a peca na casa selecionada com uma distancia para visualizacao
-                    Vector3 distance = new Vector3(0, 0, (float)-0.5);
-                    Instantiate(Piece, hit.collider.transform.position + distance, hit.collider.transform.rotation);
-
-                    //desabilita o colisor/desabilita a jogada naquela casa
-                    //novos cliques nao farao efeito
-                    hit.collider.enabled = false;
-                    
-                    //mostra o placar
-                    board_to_matrix.playersscore(scores);
-
-                    //RECOLORIR PEÇAS
-                    changed.ForEach(item=> {
-                        //Piece_D6(Clone)
-                        Debug.Log("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)");
-                        GameObject.Find("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)").GetComponent<Renderer>().material = (board_to_matrix.Turn? P1Color: P2Color);
-                        changed.Remove(item);
-                    });
-
-                    //diminue o numero de jogadas 
-                    //if (board_to_matrix.all_empty().Count == 0) essa funcao é custosa demais
-                    if (scores[0] == 0)
-                    {
-                        GameObject.FindGameObjectWithTag("messages").GetComponent<Text>().text = "Game Over";
-                        //SceneManager.LoadScene("gameover");
-
-                        if(scores[1]>scores[2]) GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().text = "VENCEDOR: " + scores[1];
-                        else if (scores[1] < scores[2]) GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().text = "VENCEDOR: " + scores[2];
-                        else
-                        {
-                            GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().text = "EMPATE: " + scores[1];
-                            GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().text = "EMPATE: " + scores[2];
-                        }
-                    }
-                }
-                else Debug.Log("(P"+(board_to_matrix.Turn? "1":"2") +") Jogada inválida em "+ hit.collider.name);
+            if (hit.collider.tag == "board")
+            {
+                Play(hit.collider);
             }
         }
     }
+
+
+    public void Play(Collider collider)
+    {
+
+            //nomeia e colore a nova peca que sera criada
+            Piece.name = "Piece_" + collider.name;
+            if (board_to_matrix.Turn) Piece.GetComponent<Renderer>().material = P1Color;
+            else Piece.GetComponent<Renderer>().material = P2Color;
+
+            //limpa pecas que devem ser limpas
+            //changed = new List<position>();
+
+            //tenta adicionar a peca ao tabuleiro add() é booleana
+            if (board_to_matrix.add(collider.name, changed))
+            {
+                //coloca a peca na casa selecionada com uma distancia para visualizacao
+                Vector3 distance = new Vector3(0, 0, (float)-0.5);
+                Instantiate(Piece, collider.transform.position + distance, collider.transform.rotation);
+
+                //desabilita o colisor/desabilita a jogada naquela casa
+                //novos cliques nao farao efeito
+                collider.enabled = false;
+
+                //mostra o placar
+                board_to_matrix.playersscore(scores);
+
+                //RECOLORIR PEÇAS
+                changed.ForEach(item => {
+                    //Piece_D6(Clone)
+                    Debug.Log("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)");
+                    GameObject.Find("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)").GetComponent<Renderer>().material = (board_to_matrix.Turn ? P1Color : P2Color);
+                    changed.Remove(item);
+                });
+
+                //diminue o numero de jogadas 
+                //if (board_to_matrix.all_empty().Count == 0) essa funcao é custosa demais
+                if (scores[0] == 0)
+                {
+                    GameObject.FindGameObjectWithTag("messages").GetComponent<Text>().text = "Game Over";
+                    //SceneManager.LoadScene("gameover");
+
+                    if (scores[1] > scores[2]) GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().text = "VENCEDOR: " + scores[1];
+                    else if (scores[1] < scores[2]) GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().text = "VENCEDOR: " + scores[2];
+                    else
+                    {
+                        GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().text = "EMPATE: " + scores[1];
+                        GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().text = "EMPATE: " + scores[2];
+                    }
+                }
+            }
+            else Debug.Log("(P" + (board_to_matrix.Turn ? "1" : "2") + ") Jogada inválida em " + collider.name);
+        
+    }
+
+
+
 
 
 }
