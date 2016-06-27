@@ -95,6 +95,7 @@ public class OnClick : MonoBehaviour {
             else 
             {
                 Play(PC_Player.random_playing());
+                //Play(PC_Player.minimax_playing(board_to_matrix.main_board,board_to_matrix.Turn));
             }
 
 
@@ -156,11 +157,10 @@ public class OnClick : MonoBehaviour {
             if (board_to_matrix.Turn) Piece.GetComponent<Renderer>().material = P1Color;
             else Piece.GetComponent<Renderer>().material = P2Color;
 
-            //limpa pecas que devem ser limpas
-            //changed = new List<position>();
+      
 
             //tenta adicionar a peca ao tabuleiro add() é booleana
-            if (board_to_matrix.add(board_to_matrix.main_board, collider.name, changed))
+            if (board_to_matrix.add(board_to_matrix.main_board, collider.name, changed, board_to_matrix.Turn))
             {
                 //coloca a peca na casa selecionada com uma distancia para visualizacao
                 Vector3 distance = new Vector3(0, 0, (float)-0.5);
@@ -197,7 +197,8 @@ public class OnClick : MonoBehaviour {
                     }
                 }
             }
-            else Debug.Log("(P" + (board_to_matrix.Turn ? "1" : "2") + ") Jogada inválida em " + collider.name);
+            else
+                Debug.Log("(P" + (board_to_matrix.Turn ? "1" : "2") + ") Jogada inválida em " + collider.name);
         
     }
 

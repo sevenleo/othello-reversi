@@ -194,7 +194,7 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-    public static bool add(int[,] board,string name, List<position> changed)
+    public static bool add(int[,] board,string name, List<position> changed,bool player)
     {
         
         //converter linha e coluna para numero chat-2-int
@@ -208,7 +208,7 @@ public class board_to_matrix : MonoBehaviour {
             if (Turn) board[line, row] = 1;
             else board[line, row] = -1;
             reverse(board, line, row, changed);
-            Turn = !Turn;
+            player = !player;
             print();
             return true;
         }
@@ -260,11 +260,13 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
+
     static bool verifymove(int[,] board,int line, int row)
     {
         if (valid_moves(board).Contains(new position(line, row))) return true;
         else return false;
     }
+
 
 
     public static List<position> valid_moves(int[,] board)
@@ -281,6 +283,7 @@ public class board_to_matrix : MonoBehaviour {
                             position? bracket;
                             bracket = find_bracket(board, i, j, direction);
                             if (bracket.HasValue) {
+                                Debug.Log("Bracket found");
                                 moves.Add(new position(i,j));
                             }
                         });
@@ -293,9 +296,9 @@ public class board_to_matrix : MonoBehaviour {
     
     public static position? find_bracket(int[,] board,int x, int y, position direction)
     {
-        int player, opponent;
-        if (Turn) { player = 1; opponent = -1; }
-        else { player = -1; opponent = 1; }
+        int opponent;
+        if (Turn) { opponent = -1; }
+        else { opponent = 1; }
 
         position bracket = new position(x + direction.x, y + direction.y);
         int bracket_color = board[bracket.x, bracket.y];
@@ -320,23 +323,12 @@ public class board_to_matrix : MonoBehaviour {
 
     public static void reverse(int[,] board,int i, int j, List<position> changed)
     {
-        /*directions.ForEach(direction => {
-            if (make_flips2(i, j, direction, changed)) {
-                Debug.Log("LISTA >> "+changed.Count);
-                changed.ForEach(item=>{
-                    board[item.x, item.y] = (Turn ? 1 : -1);
-                    Debug.Log("lista = " + item.x + " " + item.y + " = " + board[item.x, item.y]);
-                    
-                });
-            };
-        });*/
-
-        
+      
         directions.ForEach(direction =>
         {
             make_flips(board, i, j, direction, changed);
         });
-        Debug.Log("LISTA >> " + changed.Count);
+        //Debug.Log("LISTA >> " + changed.Count);
     }
 
 
@@ -348,9 +340,9 @@ public class board_to_matrix : MonoBehaviour {
 
         if (bracket.HasValue)
         {
-            Debug.Log("BRACKET YES");
-            Debug.Log( x + " " + y + " = " + board[x, y]+"\n ate\n");
-            Debug.Log( ((position)bracket).x + " " + ((position)bracket).y + " = " + board[((position)bracket).x, ((position)bracket).y]);
+            //Debug.Log("BRACKET YES");
+            //Debug.Log( x + " " + y + " = " + board[x, y]+"\n ate\n");
+            //Debug.Log( ((position)bracket).x + " " + ((position)bracket).y + " = " + board[((position)bracket).x, ((position)bracket).y]);
             position square = new position(x + direction.x, y + direction.y);
             while (!square.equals((position)bracket))
             {
@@ -359,15 +351,7 @@ public class board_to_matrix : MonoBehaviour {
                 square = new position(square.x + direction.x, square.y + direction.y);
             }
         }
-        else Debug.Log("BRACKET no");
-
-
-
-        //board[4,4] = (Turn ? 1 : -1); changed.Add(new position(4,4));
-        //board[5,5] = (Turn ? 1 : -1); changed.Add(new position(4,5));
-        //board[4,5] = (Turn ? 1 : -1); changed.Add(new position(5,5));
-        //board[5,4] = (Turn ? 1 : -1); changed.Add(new position(5,4));
-
+        //else //Debug.Log("BRACKET no");
     }
     
 
