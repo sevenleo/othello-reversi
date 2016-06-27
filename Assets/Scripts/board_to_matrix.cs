@@ -194,7 +194,7 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-    public static bool add(int[,] board,string name, List<position> changed,bool player)
+    public static bool add(int[,] board,string name, List<position> changed,bool player,int gambiarra=0)
     {
         
         //converter linha e coluna para numero chat-2-int
@@ -208,7 +208,11 @@ public class board_to_matrix : MonoBehaviour {
             if (Turn) board[line, row] = 1;
             else board[line, row] = -1;
             reverse(board, line, row, changed);
-            player = !player;
+            if(gambiarra == 0)
+                player = !player;
+            else
+                board_to_matrix.Turn = !board_to_matrix.Turn;
+
             print();
             return true;
         }

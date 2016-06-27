@@ -69,9 +69,12 @@ public class PC_Player : MonoBehaviour {
     static int minimax(int[,] actualboard, position move,bool player)
     {
         List<position> changes = new List<position>()  ;
-        board_to_matrix.add(actualboard,board_to_matrix.matrix2board(move),changes,player);
-        Debug.Log(move.x+" "+ move.y+" new = " +board_to_matrix.CalculateBoardValue(actualboard));
+        if (board_to_matrix.add(actualboard, board_to_matrix.matrix2board(move), changes, player))
+        {
+            Debug.Log(move.x + " " + move.y + " new = " + board_to_matrix.CalculateBoardValue(actualboard));
+            return board_to_matrix.CalculateBoardValue(actualboard);
+        }
+        else return 0;
        
-        return board_to_matrix.CalculateBoardValue(actualboard);
     }
 }

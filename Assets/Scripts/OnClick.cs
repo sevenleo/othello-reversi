@@ -160,7 +160,7 @@ public class OnClick : MonoBehaviour {
       
 
             //tenta adicionar a peca ao tabuleiro add() é booleana
-            if (board_to_matrix.add(board_to_matrix.main_board, collider.name, changed, board_to_matrix.Turn))
+            if (board_to_matrix.add(board_to_matrix.main_board, collider.name, changed, board_to_matrix.Turn, 1))
             {
                 //coloca a peca na casa selecionada com uma distancia para visualizacao
                 Vector3 distance = new Vector3(0, 0, (float)-0.5);
