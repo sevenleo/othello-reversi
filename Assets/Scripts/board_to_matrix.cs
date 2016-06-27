@@ -283,7 +283,7 @@ public class board_to_matrix : MonoBehaviour {
                             position? bracket;
                             bracket = find_bracket(board, i, j, direction);
                             if (bracket.HasValue) {
-                                Debug.Log("Bracket found");
+                                
                                 moves.Add(new position(i,j));
                             }
                         });
