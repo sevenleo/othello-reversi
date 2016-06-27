@@ -14,7 +14,7 @@ public class OnClick : MonoBehaviour {
 
     int[] scores = new int[3];
 
-    int delay=2000;
+    float delay = 2.0f, delaytime;
 
     public GameObject Piece;
     public Material P1Color;
@@ -25,6 +25,7 @@ public class OnClick : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        delaytime = Time.time + delay;
         //insere as pecas iniciais
         board_to_matrix.startwith("D4", true);
         board_to_matrix.startwith("E5", true);
@@ -48,64 +49,78 @@ public class OnClick : MonoBehaviour {
 
     void Update()
     {
-        //if (scores[0] > 0)
-        if (board_to_matrix.valid_moves(board_to_matrix.main_board).Count > 0)
+
+        if (delaytime < Time.time)
         {
-            //indica qual o jogador da vez
-            if (board_to_matrix.Turn)
+            
+            if (board_to_matrix.valid_moves(board_to_matrix.main_board).Count > 0)
             {
-                GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().fontStyle = FontStyle.Bold;
-                GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().fontStyle = FontStyle.Normal;
-            }
-            else
-            {
-                GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().fontStyle = FontStyle.Normal;
-                GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().fontStyle = FontStyle.Bold;
+                //indica qual o jogador da vez
+                if (board_to_matrix.Turn)
+                {
+                    GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().fontStyle = FontStyle.Bold;
+                    GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().fontStyle = FontStyle.Normal;
+                }
+                else
+                {
+                    GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().fontStyle = FontStyle.Normal;
+                    GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().fontStyle = FontStyle.Bold;
+                }
+
+                //score
+                GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().text = "P1: " + scores[1];
+                GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().text = "P2: " + scores[2];
+                GameObject.FindGameObjectWithTag("messages").GetComponent<Text>().text = "Jogadas restantes:" + scores[0];
+
+                //colore as jogadas validas com a tipcolor
+                board_to_matrix.valid_moves(board_to_matrix.main_board).ForEach(item =>
+                    GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = TipColor
+                );
+
+
+
+                //p1-humano
+                if (board_to_matrix.p1 && board_to_matrix.Turn)
+                {
+                    //click no tabuleiro
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        CastRay();
+                        delaytime = Time.time + delay;
+                    }
+                        
+
+
+                }
+                //p2-humano
+                else if (board_to_matrix.p2 && !board_to_matrix.Turn)
+                {
+                    //click no tabuleiro
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        CastRay();
+                        delaytime = Time.time + delay;
+                    }
+
+
+                }
+                // pc vs pc
+                else
+                {
+                    Play(PC_Player.random_playing());
+                    //Play(PC_Player.minimax_playing(board_to_matrix.main_board,board_to_matrix.Turn));
+                    delaytime = Time.time + delay;
+
+                }
+
+
             }
 
-            //score
-            GameObject.FindGameObjectWithTag("player1score").GetComponent<Text>().text = "P1: " + scores[1];
-            GameObject.FindGameObjectWithTag("player2score").GetComponent<Text>().text = "P2: " + scores[2];
-            GameObject.FindGameObjectWithTag("messages").GetComponent<Text>().text = "Jogadas restantes:" + scores[0];
-
-            //colore as jogadas validas com a tipcolor
-            board_to_matrix.valid_moves(board_to_matrix.main_board).ForEach(item =>
-                GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = TipColor
+            //remove a tipcolor do tabuleiro colorindo com as cores originais do tabuleiro (preto/branco) salvas na matriz 
+            board_to_matrix.not_valid_moves(board_to_matrix.main_board).ForEach(item =>
+                GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = Materialboard[item.x, item.y]
             );
-
-
-           
-            //p1-humano
-            if (board_to_matrix.p1 && board_to_matrix.Turn)
-            {
-                //click no tabuleiro
-                if (Input.GetMouseButtonDown(0))
-                    CastRay();
-
-            }
-            //p2-humano
-            else if (board_to_matrix.p2 && !board_to_matrix.Turn)
-            {
-                //click no tabuleiro
-                if (Input.GetMouseButtonDown(0))
-                    CastRay();
-
-            }
-            // pc vs pc
-            else 
-            {
-                Play(PC_Player.random_playing());
-                //Play(PC_Player.minimax_playing(board_to_matrix.main_board,board_to_matrix.Turn));
-            }
-
-
         }
-
-        //remove a tipcolor do tabuleiro colorindo com as cores originais do tabuleiro (preto/branco) salvas na matriz 
-        board_to_matrix.not_valid_moves(board_to_matrix.main_board).ForEach(item =>
-            GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = Materialboard[item.x, item.y]
-        );
-
     }
 
 
@@ -201,6 +216,7 @@ public class OnClick : MonoBehaviour {
                 Debug.Log("(P" + (board_to_matrix.Turn ? "1" : "2") + ") Jogada inválida em " + collider.name);
         
     }
+
 
 
 

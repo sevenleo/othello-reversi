@@ -13,7 +13,9 @@ public class PC_Player : MonoBehaviour {
         position random_position = board_to_matrix.valid_moves(board_to_matrix.main_board)[random_number];
         string name = board_to_matrix.matrix2board(random_position);
 
-        return GameObject.Find(name).GetComponent<Collider>();
+        Collider collided = GameObject.Find(name).GetComponent<Collider>();
+        
+        return collided;
     }
 
 

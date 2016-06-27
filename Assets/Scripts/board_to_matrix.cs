@@ -108,7 +108,7 @@ public class board_to_matrix : MonoBehaviour {
 
 
     public static void print()
-    {
+    {/*
         File.Delete("board.txt");
         File.AppendAllText("board.txt", "Turno:" + (Turn? "P1" : "P2") + "\n");
 
@@ -123,6 +123,8 @@ public class board_to_matrix : MonoBehaviour {
             }
             File.AppendAllText("board.txt", "\n");
         }
+
+        */
     }
 
 
