@@ -194,8 +194,8 @@ public class board_to_matrix : MonoBehaviour {
         if (verifymove(line, row))        {
             if (Turn) board[line, row] = 1;
             else board[line, row] = -1;
-            Turn = !Turn;
             reverse(line, row, changed);
+            Turn = !Turn;
             print();
             return true;
         }
@@ -307,12 +307,27 @@ public class board_to_matrix : MonoBehaviour {
 
     public static void reverse(int i, int j, List<position> changed)
     {
-        directions.ForEach(direction => {
-            make_flips(i, j, direction,changed);
+        /*directions.ForEach(direction => {
+            if (make_flips2(i, j, direction, changed)) {
+                Debug.Log("LISTA >> "+changed.Count);
+                changed.ForEach(item=>{
+                    board[item.x, item.y] = (Turn ? 1 : -1);
+                    Debug.Log("lista = " + item.x + " " + item.y + " = " + board[item.x, item.y]);
+                    
+                });
+            };
+        });*/
+
+        
+        directions.ForEach(direction =>
+        {
+            make_flips(i, j, direction, changed);
         });
+        Debug.Log("LISTA >> " + changed.Count);
     }
 
 
+    
     public static void make_flips(int x,int y, position direction, List<position> changed)
     {
         position? bracket = find_bracket(x, y, direction);
@@ -320,23 +335,28 @@ public class board_to_matrix : MonoBehaviour {
 
         if (bracket.HasValue)
         {
+            Debug.Log("BRACKET YES");
+            Debug.Log( x + " " + y + " = " + board[x, y]+"\n ate\n");
+            Debug.Log( ((position)bracket).x + " " + ((position)bracket).y + " = " + board[((position)bracket).x, ((position)bracket).y]);
             position square = new position(x + direction.x, y + direction.y);
-            while (square.equals((position)bracket))
+            while (!square.equals((position)bracket))
             {
                 board[square.x, square.y] = (Turn ? 1 : -1);
+                changed.Add(new position(square.x, square.y));
                 square = new position(square.x + direction.x, square.y + direction.y);
             }
         }
-      
-        /*
+        else Debug.Log("BRACKET no");
 
-        board[4,4] = (Turn ? 1 : -1); changed.Add(new position(4,4));
-        board[5,5] = (Turn ? 1 : -1); changed.Add(new position(4,5));
-        board[4,5] = (Turn ? 1 : -1); changed.Add(new position(5,5));
-        board[5,4] = (Turn ? 1 : -1); changed.Add(new position(5,4));
-        */
+
+
+        //board[4,4] = (Turn ? 1 : -1); changed.Add(new position(4,4));
+        //board[5,5] = (Turn ? 1 : -1); changed.Add(new position(4,5));
+        //board[4,5] = (Turn ? 1 : -1); changed.Add(new position(5,5));
+        //board[5,4] = (Turn ? 1 : -1); changed.Add(new position(5,4));
+
     }
-
+    
 
     public void changeplayer1()
     {

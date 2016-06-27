@@ -177,7 +177,6 @@ public class OnClick : MonoBehaviour {
                     //Piece_D6(Clone)
                     Debug.Log("FLIP >> Piece_" + board_to_matrix.matrix2board(item) + "(Clone)");
                     GameObject.Find("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)").GetComponent<Renderer>().material = (board_to_matrix.Turn ? P1Color : P2Color);
-                    GameObject.Find("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)").GetComponent<Animation>().Play();
                     changed.Remove(item);
                 });
 
