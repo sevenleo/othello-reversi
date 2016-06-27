@@ -280,15 +280,14 @@ public class board_to_matrix : MonoBehaviour {
 
     public static position? find_bracket(int x, int y, position direction)
     {
-        int color, opponent;
-        if (Turn) { color = 1; opponent = -1; }
-        else { color = -1; opponent = 1; }
+        int player, opponent;
+        if (Turn) { player = 1; opponent = -1; }
+        else { player = -1; opponent = 1; }
 
         position bracket = new position(x + direction.x, y + direction.y);
         int bracket_color = board[bracket.x, bracket.y];
 
-        if (bracket_color == color) return null;
-        else
+        if (bracket_color == opponent)
         {
             while (bracket_color == opponent)
             {
@@ -296,11 +295,13 @@ public class board_to_matrix : MonoBehaviour {
                 bracket_color = board[bracket.x, bracket.y];
             }
             if (board[bracket.x, bracket.y] == 0) return null;
-            else {
+            else
+            {
                 return bracket;
             }
-            
+
         }
+        else return null;
     }
 
 
@@ -314,8 +315,8 @@ public class board_to_matrix : MonoBehaviour {
 
     public static void make_flips(int x,int y, position direction, List<position> changed)
     {
-        
         position? bracket = find_bracket(x, y, direction);
+        
 
         if (bracket.HasValue)
         {
@@ -336,10 +337,12 @@ public class board_to_matrix : MonoBehaviour {
         */
     }
 
+
     public void changeplayer1()
     {
         p1 = !p1;
     }
+
 
     public void changeplayer2()
     {
