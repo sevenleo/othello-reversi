@@ -14,9 +14,9 @@ public class MinMax : MonoBehaviour {
 	
 	}
 
-    /*
     
-    position minimax(position move, int[,] board, int depth, bool maximizingPlayer)    {
+    /*
+    position minimax(position move,int[,] board, int depth, bool maximizingPlayer)    {
         //node nao eh char, coloquei soh pra compilar
 
         List<position> validmoves;
@@ -29,10 +29,10 @@ public class MinMax : MonoBehaviour {
 
         if (board_to_matrix.Turn)   {
             bestValue = -(System.Int32.MaxValue);
-            validmoves = calc_validmoves(move,board);
+            validmoves = calc_validmoves(board);
 
             validmoves.ForEach(child => { 
-                position newvalue = minimax(child, board, depth, false);
+                int newvalue = minimax(child, board, depth, false);
                 if (bestValue < newvalue);
                 bestValue =newvalue;
             });
@@ -55,7 +55,7 @@ public class MinMax : MonoBehaviour {
 
     */
 
-    List<position> calc_validmoves(position move, int[,]board){
+    List<position> calc_validmoves( int[,]board){
         List<position> moves = new List<position>();
         return moves;
     }

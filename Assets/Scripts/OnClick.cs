@@ -48,7 +48,8 @@ public class OnClick : MonoBehaviour {
 
     void Update()
     {
-        if (scores[0] > 0)
+        //if (scores[0] > 0)
+        if (board_to_matrix.valid_moves(board_to_matrix.board).Count > 0)
         {
             //indica qual o jogador da vez
             if (board_to_matrix.Turn)
@@ -68,7 +69,7 @@ public class OnClick : MonoBehaviour {
             GameObject.FindGameObjectWithTag("messages").GetComponent<Text>().text = "Jogadas restantes:" + scores[0];
 
             //colore as jogadas validas com a tipcolor
-            board_to_matrix.valid_moves().ForEach(item =>
+            board_to_matrix.valid_moves(board_to_matrix.board).ForEach(item =>
                 GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = TipColor
             );
 
@@ -93,14 +94,14 @@ public class OnClick : MonoBehaviour {
             // pc vs pc
             else 
             {
-                Play(PC_Random_Player.playing());
+                Play(PC_Player.random_playing());
             }
 
 
         }
 
         //remove a tipcolor do tabuleiro colorindo com as cores originais do tabuleiro (preto/branco) salvas na matriz 
-        board_to_matrix.not_valid_moves().ForEach(item =>
+        board_to_matrix.not_valid_moves(board_to_matrix.board).ForEach(item =>
             GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = Materialboard[item.x, item.y]
         );
 
@@ -181,8 +182,8 @@ public class OnClick : MonoBehaviour {
                 changed.Clear();
 
                 //diminue o numero de jogadas 
-                //if (board_to_matrix.all_empty().Count == 0) essa funcao é custosa demais
-                if (scores[0] == 0)
+                if (board_to_matrix.valid_moves(board_to_matrix.board).Count == 0) //essa funcao é custosa demais
+                //if (scores[0] == 0)
                 {
                     GameObject.FindGameObjectWithTag("messages").GetComponent<Text>().text = "Game Over";
                     //SceneManager.LoadScene("gameover");

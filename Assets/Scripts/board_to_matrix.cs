@@ -116,7 +116,7 @@ public class board_to_matrix : MonoBehaviour {
         {
             for (int row = 0; row < 10; row++)
             {
-                if ( valid_moves().Contains(new position(line, row)) )
+                if ( valid_moves(board_to_matrix.board).Contains(new position(line, row)) )
                     File.AppendAllText("board.txt", "\t" + "[]");
                 else
                     File.AppendAllText("board.txt", "\t" + board[line, row]);
@@ -240,21 +240,21 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-    public static List<position> not_valid_moves() {
+    public static List<position> not_valid_moves(int[,] board) {
         List<position> not_valid_moves = board_to_matrix.all_moves();
-        not_valid_moves.RemoveAll(item => board_to_matrix.valid_moves().Contains(item));
+        not_valid_moves.RemoveAll(item => board_to_matrix.valid_moves(board).Contains(item));
         return not_valid_moves;
     }
 
 
     static bool verifymove(int line, int row)
     {
-        if (valid_moves().Contains(new position(line, row))) return true;
+        if (valid_moves(board_to_matrix.board).Contains(new position(line, row))) return true;
         else return false;
     }
 
 
-    public static List<position> valid_moves()
+    public static List<position> valid_moves(int[,] board)
     {
         List<position> moves = new List<position>();
         
@@ -277,7 +277,7 @@ public class board_to_matrix : MonoBehaviour {
         return moves;
     }
 
-
+    
     public static position? find_bracket(int x, int y, position direction)
     {
         int player, opponent;
