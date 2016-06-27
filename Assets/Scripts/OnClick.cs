@@ -66,6 +66,35 @@ public class OnClick : MonoBehaviour {
             board_to_matrix.valid_moves().ForEach(item =>
                 GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = TipColor
             );
+
+
+           
+
+            //p1-humano
+            if (board_to_matrix.p1 == true && board_to_matrix.Turn)
+            {
+                //click no tabuleiro
+                if (Input.GetMouseButtonDown(0))
+                    CastRay();
+            }
+            //p1-pc
+            else if (board_to_matrix.p1 == false && board_to_matrix.Turn)
+            {
+                Play(PC_Random_Player.playing());
+            }
+            //p2-humano
+            if (board_to_matrix.p2 == true && !board_to_matrix.Turn)
+            {
+                //click no tabuleiro
+                if (Input.GetMouseButtonDown(0))
+                    CastRay();
+            }
+            //p2-pc
+            else if (board_to_matrix.p2 == false && !board_to_matrix.Turn)
+            {
+                Play(PC_Random_Player.playing());
+            }
+
         }
 
         //remove a tipcolor do tabuleiro colorindo com as cores originais do tabuleiro (preto/branco) salvas na matriz 
@@ -73,41 +102,29 @@ public class OnClick : MonoBehaviour {
             GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = Materialboard[item.x, item.y]
         );
 
-        //p1-humano
-        if (board_to_matrix.p1 == true && board_to_matrix.Turn)
-        {
-            //click no tabuleiro
-            if (Input.GetMouseButtonDown(0))
-                CastRay();
-        }
-        //p1-pc
-        else if (board_to_matrix.p1 == false && board_to_matrix.Turn)
-        {
-            Play( PC_Random_Player.playing() );
-        }
-        //p2-humano
-        if (board_to_matrix.p2 == true && !board_to_matrix.Turn)
-        {
-            //click no tabuleiro
-            if (Input.GetMouseButtonDown(0))
-                CastRay();
-        }
-        //p2-pc
-        else if (board_to_matrix.p2 == false && !board_to_matrix.Turn)
-        {
-            Play( PC_Random_Player.playing() );
-        }
-        
+    }
 
 
+    public Camera camera3d45;
+    public Camera camera2d;
+    public Camera cameratop;
+    public Camera cameraclose;
 
+    public Camera CameraAtiva()
+    {
+        if (camera2d.enabled) return camera2d;
+        else if (cameratop.enabled) return cameratop;
+        else if (cameraclose.enabled) return cameraclose;
+        else return camera3d45;
 
     }
 
+
     void CastRay()    {
+
         
-        
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        Ray ray = CameraAtiva().ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         //raio que vai da camera ate a posicao do mouse
@@ -139,10 +156,11 @@ public class OnClick : MonoBehaviour {
                 //coloca a peca na casa selecionada com uma distancia para visualizacao
                 Vector3 distance = new Vector3(0, 0, (float)-0.5);
                 Instantiate(Piece, collider.transform.position + distance, collider.transform.rotation);
+                GameObject.Find("Piece_" + collider.name + "(Clone)").GetComponent<Animation>().Play();
 
                 //desabilita o colisor/desabilita a jogada naquela casa
                 //novos cliques nao farao efeito
-                collider.enabled = false;
+            collider.enabled = false;
 
                 //mostra o placar
                 board_to_matrix.playersscore(scores);
@@ -152,6 +170,7 @@ public class OnClick : MonoBehaviour {
                     //Piece_D6(Clone)
                     Debug.Log("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)");
                     GameObject.Find("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)").GetComponent<Renderer>().material = (board_to_matrix.Turn ? P1Color : P2Color);
+                    GameObject.Find("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)").GetComponent<Animation>().Play();
                     changed.Remove(item);
                 });
 

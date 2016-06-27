@@ -36,8 +36,8 @@ public class board_to_matrix : MonoBehaviour {
     public static bool Turn = true;
 
     //quem esta jogando
-    public static bool p1 = false;
-    public static bool p2 = false;
+    public static bool p1 = true;
+    public static bool p2 = true;
 
 
     //Direcoes
@@ -335,18 +335,15 @@ public class board_to_matrix : MonoBehaviour {
         */
     }
 
-    /*
-    def _make_flips(self, move, color, direction):
-     bracket = self._find_bracket(move, color, direction)
-     if not bracket:
-         return
-     square = [move.x + direction[0], move.y + direction[1]]
-     while square != bracket:
-       self.board[square[0]][square[1]] = color
-       square = [square[0] + direction[0], square[1] + direction[1]]
+    public void changeplayer1()
+    {
+        p1 = !p1;
+    }
 
- */
-
+    public void changeplayer2()
+    {
+        p2 = !p2;
+    }
 
 }
 
