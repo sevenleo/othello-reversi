@@ -296,7 +296,9 @@ public class board_to_matrix : MonoBehaviour {
                 bracket_color = board[bracket.x, bracket.y];
             }
             if (board[bracket.x, bracket.y] == 0) return null;
-            else return bracket;
+            else {
+                return bracket;
+            }
             
         }
     }
@@ -314,18 +316,17 @@ public class board_to_matrix : MonoBehaviour {
     {
         
         position? bracket = find_bracket(x, y, direction);
-        
+
         if (bracket.HasValue)
         {
-            Debug.Log("bracket (YES YES) founded");
-            position square = new position(x + direction.x ,  y + direction.y);
+            position square = new position(x + direction.x, y + direction.y);
             while (square.equals((position)bracket))
             {
                 board[square.x, square.y] = (Turn ? 1 : -1);
                 square = new position(square.x + direction.x, square.y + direction.y);
             }
-            
-        }else Debug.Log("bracket NOT founded");
+        }
+      
         /*
 
         board[4,4] = (Turn ? 1 : -1); changed.Add(new position(4,4));
