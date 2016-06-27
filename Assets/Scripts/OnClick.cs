@@ -22,6 +22,11 @@ public class OnClick : MonoBehaviour {
     public Material TipColor;
     public Canvas canvas;
 
+    public Camera camera3d45;
+    public Camera camera2d;
+    public Camera cameratop;
+    public Camera cameraclose;
+
     // Use this for initialization
     void Start () {
 
@@ -49,6 +54,9 @@ public class OnClick : MonoBehaviour {
 
     void Update()
     {
+
+        check_speed();
+
 
         if (delaytime < Time.time)
         {
@@ -124,10 +132,7 @@ public class OnClick : MonoBehaviour {
     }
 
 
-    public Camera camera3d45;
-    public Camera camera2d;
-    public Camera cameratop;
-    public Camera cameraclose;
+
 
     public Camera CameraAtiva()
     {
@@ -218,6 +223,20 @@ public class OnClick : MonoBehaviour {
     }
 
 
+
+
+
+    public void check_speed()
+    {
+
+        GameObject.Find("Messages").GetComponent<Text>().text = "Espere " + (int)(delaytime  - Time.time)+"s";
+        if (delay != GameObject.Find("velocidade_slider").GetComponent<Slider>().value) {
+            delay = GameObject.Find("velocidade_slider").GetComponent<Slider>().value;
+            delaytime = Time.time + delay;
+        }
+        
+
+    }
 
 
 
