@@ -49,7 +49,7 @@ public class OnClick : MonoBehaviour {
     void Update()
     {
         //if (scores[0] > 0)
-        if (board_to_matrix.valid_moves(board_to_matrix.board).Count > 0)
+        if (board_to_matrix.valid_moves(board_to_matrix.main_board).Count > 0)
         {
             //indica qual o jogador da vez
             if (board_to_matrix.Turn)
@@ -69,7 +69,7 @@ public class OnClick : MonoBehaviour {
             GameObject.FindGameObjectWithTag("messages").GetComponent<Text>().text = "Jogadas restantes:" + scores[0];
 
             //colore as jogadas validas com a tipcolor
-            board_to_matrix.valid_moves(board_to_matrix.board).ForEach(item =>
+            board_to_matrix.valid_moves(board_to_matrix.main_board).ForEach(item =>
                 GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = TipColor
             );
 
@@ -101,7 +101,7 @@ public class OnClick : MonoBehaviour {
         }
 
         //remove a tipcolor do tabuleiro colorindo com as cores originais do tabuleiro (preto/branco) salvas na matriz 
-        board_to_matrix.not_valid_moves(board_to_matrix.board).ForEach(item =>
+        board_to_matrix.not_valid_moves(board_to_matrix.main_board).ForEach(item =>
             GameObject.Find(board_to_matrix.matrix2board(item)).GetComponent<Renderer>().material = Materialboard[item.x, item.y]
         );
 
@@ -160,7 +160,7 @@ public class OnClick : MonoBehaviour {
             //changed = new List<position>();
 
             //tenta adicionar a peca ao tabuleiro add() é booleana
-            if (board_to_matrix.add(collider.name, changed))
+            if (board_to_matrix.add(board_to_matrix.main_board, collider.name, changed))
             {
                 //coloca a peca na casa selecionada com uma distancia para visualizacao
                 Vector3 distance = new Vector3(0, 0, (float)-0.5);
@@ -182,7 +182,7 @@ public class OnClick : MonoBehaviour {
                 changed.Clear();
 
                 //diminue o numero de jogadas 
-                if (board_to_matrix.valid_moves(board_to_matrix.board).Count == 0) //essa funcao é custosa demais
+                if (board_to_matrix.valid_moves(board_to_matrix.main_board).Count == 0) //essa funcao é custosa demais
                 //if (scores[0] == 0)
                 {
                     GameObject.FindGameObjectWithTag("messages").GetComponent<Text>().text = "Game Over";

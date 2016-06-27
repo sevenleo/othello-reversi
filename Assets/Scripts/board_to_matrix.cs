@@ -32,7 +32,7 @@ public class board_to_matrix : MonoBehaviour {
 
     
     //public static direction[] directions;
-    public static int[,] board;
+    public static int[,] main_board;
     public static bool Turn = true;
 
     //quem esta jogando
@@ -57,12 +57,12 @@ public class board_to_matrix : MonoBehaviour {
 
     void Start () {
         
-        board = new int[10, 10];
+        main_board = new int[10, 10];
 
-        board[4, 4] = 1;
-        board[4, 5] = 1;
-        board[5, 4] = -1;
-        board[5, 5] = -1;
+        main_board[4, 4] = 1;
+        main_board[4, 5] = 1;
+        main_board[5, 4] = -1;
+        main_board[5, 5] = -1;
 
         directions.Add(UP);
         directions.Add(DOWN);
@@ -81,7 +81,7 @@ public class board_to_matrix : MonoBehaviour {
         {
             for (j = 0; j < 10; j++)
             {
-                board[i, j] = 0; //QUAL VALOR COLOCAR? ZERO NAO INFLUENCIA NO RESULTADO FINAL, ACHO Q ÉA UANICA OPCAO.
+                main_board[i, j] = 0; //QUAL VALOR COLOCAR? ZERO NAO INFLUENCIA NO RESULTADO FINAL, ACHO Q ÉA UANICA OPCAO.
             }
         }
 
@@ -116,18 +116,30 @@ public class board_to_matrix : MonoBehaviour {
         {
             for (int row = 0; row < 10; row++)
             {
-                if ( valid_moves(board_to_matrix.board).Contains(new position(line, row)) )
+                if ( valid_moves(board_to_matrix.main_board).Contains(new position(line, row)) )
                     File.AppendAllText("board.txt", "\t" + "[]");
                 else
-                    File.AppendAllText("board.txt", "\t" + board[line, row]);
+                    File.AppendAllText("board.txt", "\t" + main_board[line, row]);
             }
             File.AppendAllText("board.txt", "\n");
-
         }
-
-        
     }
 
+
+    public static int CalculateBoardValue(int[,] board)
+    {
+        int value = 0;
+
+        for (int line = 9; line >= 0; line--)
+        {
+            for (int row = 0; row < 10; row++)
+            {
+                if (board[line, row] == 1) value++;
+                if (board[line, row] == -1) value--;
+            }
+        }
+        return value;
+    }
 
     public static void playersscore(int[] scores)
     {
@@ -140,9 +152,9 @@ public class board_to_matrix : MonoBehaviour {
         {
             for (int j = 1; j < 9; j++)
             {
-                if (board[i, j] == 1)
+                if (main_board[i, j] == 1)
                     scores[1]++;
-                else if (board[i, j] == -1)
+                else if (main_board[i, j] == -1)
                     scores[2]++;
                 else
                     scores[0]++;
@@ -150,6 +162,7 @@ public class board_to_matrix : MonoBehaviour {
         }
 
     }
+
 
     public static string matrix2board(position p)
     {
@@ -173,15 +186,15 @@ public class board_to_matrix : MonoBehaviour {
         row++;
         line++;
 
-        if (player) board[line, row] = 1;
-        else board[line, row] = -1;
+        if (player) main_board[line, row] = 1;
+        else main_board[line, row] = -1;
         print();
         
   
     }
 
 
-    public static bool add(string name, List<position> changed)
+    public static bool add(int[,] board,string name, List<position> changed)
     {
         
         //converter linha e coluna para numero chat-2-int
@@ -191,10 +204,10 @@ public class board_to_matrix : MonoBehaviour {
         row++;
         line++;
 
-        if (verifymove(line, row))        {
+        if (verifymove(board,line, row))        {
             if (Turn) board[line, row] = 1;
             else board[line, row] = -1;
-            reverse(line, row, changed);
+            reverse(board, line, row, changed);
             Turn = !Turn;
             print();
             return true;
@@ -207,7 +220,7 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-    public static List<position> all_moves()
+    public static List<position> all_moves(int[,] board)
     {
         List<position> moves = new List<position>();
 
@@ -223,7 +236,7 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-    public static List<position> all_empty()
+    public static List<position> all_empty(int[,] board)
     {
         List<position> moves = new List<position>();
 
@@ -241,15 +254,15 @@ public class board_to_matrix : MonoBehaviour {
 
 
     public static List<position> not_valid_moves(int[,] board) {
-        List<position> not_valid_moves = board_to_matrix.all_moves();
+        List<position> not_valid_moves = board_to_matrix.all_moves(board);
         not_valid_moves.RemoveAll(item => board_to_matrix.valid_moves(board).Contains(item));
         return not_valid_moves;
     }
 
 
-    static bool verifymove(int line, int row)
+    static bool verifymove(int[,] board,int line, int row)
     {
-        if (valid_moves(board_to_matrix.board).Contains(new position(line, row))) return true;
+        if (valid_moves(board).Contains(new position(line, row))) return true;
         else return false;
     }
 
@@ -266,7 +279,7 @@ public class board_to_matrix : MonoBehaviour {
                 if (board[i, j] == 0) {
                         directions.ForEach(direction => {
                             position? bracket;
-                            bracket = find_bracket(i, j, direction);
+                            bracket = find_bracket(board, i, j, direction);
                             if (bracket.HasValue) {
                                 moves.Add(new position(i,j));
                             }
@@ -278,7 +291,7 @@ public class board_to_matrix : MonoBehaviour {
     }
 
     
-    public static position? find_bracket(int x, int y, position direction)
+    public static position? find_bracket(int[,] board,int x, int y, position direction)
     {
         int player, opponent;
         if (Turn) { player = 1; opponent = -1; }
@@ -305,7 +318,7 @@ public class board_to_matrix : MonoBehaviour {
     }
 
 
-    public static void reverse(int i, int j, List<position> changed)
+    public static void reverse(int[,] board,int i, int j, List<position> changed)
     {
         /*directions.ForEach(direction => {
             if (make_flips2(i, j, direction, changed)) {
@@ -321,16 +334,16 @@ public class board_to_matrix : MonoBehaviour {
         
         directions.ForEach(direction =>
         {
-            make_flips(i, j, direction, changed);
+            make_flips(board, i, j, direction, changed);
         });
         Debug.Log("LISTA >> " + changed.Count);
     }
 
 
     
-    public static void make_flips(int x,int y, position direction, List<position> changed)
+    public static void make_flips(int[,] board,int x,int y, position direction, List<position> changed)
     {
-        position? bracket = find_bracket(x, y, direction);
+        position? bracket = find_bracket(board, x, y, direction);
         
 
         if (bracket.HasValue)
