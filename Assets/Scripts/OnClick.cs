@@ -177,8 +177,8 @@ public class OnClick : MonoBehaviour {
                     //Piece_D6(Clone)
                     Debug.Log("FLIP >> Piece_" + board_to_matrix.matrix2board(item) + "(Clone)");
                     GameObject.Find("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)").GetComponent<Renderer>().material = (board_to_matrix.Turn ? P2Color : P1Color);
-                    changed.Remove(item);
                 });
+                changed.Clear();
 
                 //diminue o numero de jogadas 
                 //if (board_to_matrix.all_empty().Count == 0) essa funcao é custosa demais
