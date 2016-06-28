@@ -91,9 +91,9 @@ public class OnClick : MonoBehaviour {
 
 
                 //p1-humano ou p2-humano
-                if ( (board_to_matrix.p1 && board_to_matrix.Turn) || (board_to_matrix.p2 && !board_to_matrix.Turn) )
+                if ((board_to_matrix.p1 && board_to_matrix.Turn) || (board_to_matrix.p2 && !board_to_matrix.Turn))
                 {
-                    
+
                     //click no tabuleiro
                     if (Input.GetMouseButtonDown(0))
                     {
@@ -106,18 +106,34 @@ public class OnClick : MonoBehaviour {
                 // pc vs pc
                 else
                 {
-                    int dif = (int)GameObject.Find("dificuldade_slider").GetComponent<Slider>().value;
 
-                    if ( dif == 0)
-                        Play(PC_Player.random_playing());
+                    if (board_to_matrix.Turn)
+                    {
+                        int dif = (int)GameObject.Find("dificuldade1_slider").GetComponent<Slider>().value;
+
+                        if (dif == 0)
+                            Play(PC_Player.random_playing());
+                        else
+                            Play(PC_Player.minimax_playing(board_to_matrix.main_board, board_to_matrix.Turn, dif));
+
+                        delaytime = Time.time + delay;
+                    }
+                    //pc_player2-always random
                     else
-                        Play(PC_Player.minimax_playing(board_to_matrix.main_board,board_to_matrix.Turn, dif));
+                    {
+                        int dif = (int)GameObject.Find("dificuldade2_slider").GetComponent<Slider>().value;
 
-                    delaytime = Time.time + delay;
+                        if (dif == 0)
+                            Play(PC_Player.random_playing());
+                        else
+                            Play(PC_Player.minimax_playing(board_to_matrix.main_board, board_to_matrix.Turn, dif));
+
+                        delaytime = Time.time + delay;
+                    }
+
                 }
 
-
-            }
+               }
 
             //remove a tipcolor do tabuleiro colorindo com as cores originais do tabuleiro (preto/branco) salvas na matriz 
             board_to_matrix.not_valid_moves(board_to_matrix.main_board).ForEach(item =>
@@ -243,6 +259,8 @@ public class OnClick : MonoBehaviour {
 
     public void animations_check()
     {
+        
         animations = !animations;
+        GameObject.FindGameObjectWithTag("animlabel").GetComponent<Text>().text = "Animation " + (animations ? "true" : "false");
     }
 }

@@ -86,6 +86,7 @@ public class PC_Player : MonoBehaviour {
     static int minimax(int[,] actualboard, position move, int depth, bool player)
     {
         int[,] board = (int[,])actualboard.Clone();
+        int newvalue, value = board_to_matrix.CalculateBoardValue(actualboard);
         List<position> changes = new List<position>();
         List<position> moves;
 
@@ -94,7 +95,7 @@ public class PC_Player : MonoBehaviour {
             moves = board_to_matrix.valid_moves(board);
             if (depth > 1 && moves.Count > 1) {
 
-                int newvalue, value = board_to_matrix.CalculateBoardValue(actualboard);
+                
                 position playthis = moves[0];
 
                 //max
@@ -128,7 +129,7 @@ public class PC_Player : MonoBehaviour {
             }
 
             //Debug.Log(" new = " + board_to_matrix.CalculateBoardValue(actualboard));
-            return board_to_matrix.CalculateBoardValue(actualboard);
+            return value;
         }
 
         else return 0;
