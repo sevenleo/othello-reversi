@@ -93,7 +93,7 @@ public class board_to_matrix : MonoBehaviour {
 
 
     public static void print()
-    {/*
+    {
         File.Delete("board.txt");
         File.AppendAllText("board.txt", "Turno:" + (Turn? "P1" : "P2") + "\n");
 
@@ -108,8 +108,6 @@ public class board_to_matrix : MonoBehaviour {
             }
             File.AppendAllText("board.txt", "\n");
         }
-
-        */
     }
 
 
@@ -274,7 +272,8 @@ public class board_to_matrix : MonoBehaviour {
                             position? bracket;
                             bracket = find_bracket(board, i, j, direction);
                             if (bracket.HasValue) {
-                                moves.Add(new position(i,j));
+                                if ( !moves.Contains(new position(i, j) ) )
+                                    moves.Add(new position(i,j));
                             }
                         });
                 }

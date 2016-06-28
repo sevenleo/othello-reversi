@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Threading;
 using System.Collections.Generic;
+using System.IO;
 
 public class PC_Player : MonoBehaviour {
 
@@ -34,8 +35,7 @@ public class PC_Player : MonoBehaviour {
     {
         int[,] board = actualboard;
 
-        int newvalue = 0;
-        position playthis=new position(-1,-1);
+        
 
         int value = board_to_matrix.CalculateBoardValue(board);
         Debug.Log("value = " + value);
@@ -43,11 +43,20 @@ public class PC_Player : MonoBehaviour {
 
         List<position> moves = board_to_matrix.valid_moves(board);
 
+        if (moves.Count<=0) Debug.LogError("Sem movimentos");
+
+        File.Delete("validmoves.txt");
+        File.AppendAllText("validmoves.txt", "+ move: x y \n");
+
+
+        int newvalue = 0;
+        position playthis = moves[0];
+
         //max
-        if (player)
-        {
+        if (player){
             moves.ForEach(move =>
             {
+                File.AppendAllText("validmoves.txt", "+ move:" + move.toString() + "\n");
                 newvalue = minimax(board, move, depth,true);
                 if (newvalue > value)
                 {
@@ -58,10 +67,10 @@ public class PC_Player : MonoBehaviour {
         }
 
         //min
-        else
-        {
+        else{
             moves.ForEach(move =>
             {
+                File.AppendAllText("validmoves.txt", "- move:" + move.toString() + "\n");
                 newvalue = minimax(board, move, depth,false);
                 if (newvalue < value)
                 {
@@ -72,6 +81,7 @@ public class PC_Player : MonoBehaviour {
         }
 
         string name = board_to_matrix.matrix2board(playthis);
+        Debug.Log("try " + name);
         return GameObject.Find(name).GetComponent<Collider>();
     }
 
@@ -79,6 +89,7 @@ public class PC_Player : MonoBehaviour {
 
     static int minimax(int[,] actualboard, position move, int depth, bool player)
     {
+        /*
         List<position> changes = new List<position>();
 
         if (board_to_matrix.add(actualboard, board_to_matrix.matrix2board(move), changes, player))
@@ -88,7 +99,11 @@ public class PC_Player : MonoBehaviour {
         }
 
         else return 0;
+        */
 
+        int value = (int)(Random.Range(-100, 100));
+        Debug.Log(move.x + " " + move.y + " new = " + value);
+        return value;
 
        
     }

@@ -92,14 +92,13 @@ public class OnClick : MonoBehaviour {
                 //p1-humano ou p2-humano
                 if ( (board_to_matrix.p1 && board_to_matrix.Turn) || (board_to_matrix.p2 && !board_to_matrix.Turn) )
                 {
+                    
                     //click no tabuleiro
                     if (Input.GetMouseButtonDown(0))
                     {
                         CastRay();
                         delaytime = Time.time + delay;
                     }
-                        
-
 
                 }
 
