@@ -117,8 +117,13 @@ public class OnClick : MonoBehaviour {
                 // pc vs pc
                 else
                 {
-                    Play(PC_Player.random_playing());
-                    //Play(PC_Player.minimax_playing(board_to_matrix.main_board,board_to_matrix.Turn));
+                    
+                    int dif = (int)GameObject.Find("dificuldade_slider").GetComponent<Slider>().value;
+
+                    if ( dif == 0)
+                        Play(PC_Player.random_playing());
+                    else
+                        Play(PC_Player.minimax_playing(board_to_matrix.main_board,board_to_matrix.Turn, dif));
                     delaytime = Time.time + delay;
 
                 }
