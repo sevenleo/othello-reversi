@@ -22,6 +22,8 @@ public class PC_Player : MonoBehaviour {
 
 
 
+
+
     public static Collider minimax_playing(int[,] actualboard,bool player)
     {
         int[,] board = actualboard;

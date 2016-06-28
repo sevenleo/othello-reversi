@@ -27,6 +27,8 @@ public class OnClick : MonoBehaviour {
     public Camera cameratop;
     public Camera cameraclose;
 
+   
+
     // Use this for initialization
     void Start () {
 
@@ -182,6 +184,7 @@ public class OnClick : MonoBehaviour {
             //tenta adicionar a peca ao tabuleiro add() é booleana
             if (board_to_matrix.add(board_to_matrix.main_board, collider.name, changed, board_to_matrix.Turn, 1))
             {
+            Debug.Log("(P" + (board_to_matrix.Turn ? "1" : "2") + ")  em " + collider.name);
                 //coloca a peca na casa selecionada com uma distancia para visualizacao
                 Vector3 distance = new Vector3(0, 0, (float)-0.5);
                 Instantiate(Piece, collider.transform.position + distance, collider.transform.rotation);
@@ -198,6 +201,8 @@ public class OnClick : MonoBehaviour {
                     //Piece_D6(Clone)
                     Debug.Log("FLIP >> Piece_" + board_to_matrix.matrix2board(item) + "(Clone)");
                     GameObject.Find("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)").GetComponent<Renderer>().material = (board_to_matrix.Turn ? P2Color : P1Color);
+                    
+
                 });
                 changed.Clear();
 
@@ -228,16 +233,20 @@ public class OnClick : MonoBehaviour {
 
     public void check_speed()
     {
-
         GameObject.Find("Messages").GetComponent<Text>().text = "Espere " + (int)(delaytime  - Time.time)+"s";
         if (delay != GameObject.Find("velocidade_slider").GetComponent<Slider>().value) {
             delay = GameObject.Find("velocidade_slider").GetComponent<Slider>().value;
             delaytime = Time.time + delay;
         }
-        
-
     }
 
+
+    
+    public void replay()
+    {
+        board_to_matrix.replay();  
+        SceneManager.LoadScene(0);
+    }
 
 
 
