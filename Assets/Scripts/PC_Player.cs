@@ -6,6 +6,12 @@ using System.Collections.Generic;
 
 public class PC_Player : MonoBehaviour {
 
+
+
+
+
+
+
     public static Collider random_playing()
     {
         int max_random_number = board_to_matrix.valid_moves(board_to_matrix.main_board).Count;

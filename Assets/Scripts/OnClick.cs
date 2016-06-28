@@ -162,14 +162,14 @@ public class OnClick : MonoBehaviour {
             //se o objeto de colisao for o tabuleiro
             if (hit.collider.tag == "board")
             {
-                Play(hit.collider);
+                
                 GameObject collided = GameObject.Find("Piece_" + hit.collider.name + "(Clone)");
                 if (collided != null)
                 {
                     collided.GetComponent<Animation>().Play();
                     collided.GetComponent<Animator>().enabled = true;
                 }
-                
+                Play(hit.collider);
 
             }
         }
