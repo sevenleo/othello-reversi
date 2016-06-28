@@ -43,10 +43,11 @@ public class PC_Player : MonoBehaviour {
 
         List<position> moves = board_to_matrix.valid_moves(board);
 
-        if (moves.Count<=0) Debug.LogError("Sem movimentos");
+        //if (moves.Count<=0) Debug.LogError("Sem movimentos");
 
-        File.Delete("validmoves.txt");
-        File.AppendAllText("validmoves.txt", "+ move: x y \n");
+        //File.Delete("validmoves.txt");
+        //File.AppendAllText("validmoves.txt", "-----------------------\n");
+        //File.AppendAllText("validmoves.txt", "+ move: x y \n");
 
 
         int newvalue = 0;
