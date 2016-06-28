@@ -27,6 +27,7 @@ public class OnClick : MonoBehaviour {
     public Camera cameratop;
     public Camera cameraclose;
 
+    public bool animations = true;
    
 
     // Use this for initialization
@@ -179,10 +180,11 @@ public class OnClick : MonoBehaviour {
                 //coloca a peca na casa selecionada com uma distancia para visualizacao
                 Vector3 distance = new Vector3(0, 0, (float)-0.5);
                 Instantiate(Piece, collider.transform.position + distance, collider.transform.rotation);
+                if(animations) GameObject.Find("Piece_" + collider.name + "(Clone)").GetComponent<Animator>().enabled = true;
 
-                //desabilita o colisor/desabilita a jogada naquela casa
-                //novos cliques nao farao efeito
-                collider.enabled = false;
+            //desabilita o colisor/desabilita a jogada naquela casa
+            //novos cliques nao farao efeito
+            collider.enabled = false;
 
                 //mostra o placar
                 board_to_matrix.playersscore(scores);
@@ -192,14 +194,11 @@ public class OnClick : MonoBehaviour {
                     //Piece_D6(Clone)
                     Debug.Log("FLIP >> Piece_" + board_to_matrix.matrix2board(item) + "(Clone)");
                     GameObject.Find("Piece_" + board_to_matrix.matrix2board(item) + "(Clone)").GetComponent<Renderer>().material = (board_to_matrix.Turn ? P2Color : P1Color);
-                    
-
                 });
                 changed.Clear();
 
                 //diminue o numero de jogadas 
                 if (board_to_matrix.valid_moves(board_to_matrix.main_board).Count == 0) //essa funcao é custosa demais
-                //if (scores[0] == 0)
                 {
                     GameObject.FindGameObjectWithTag("messages").GetComponent<Text>().text = "Game Over";
                     //SceneManager.LoadScene("gameover");
@@ -235,10 +234,14 @@ public class OnClick : MonoBehaviour {
     
     public void replay()
     {
+        animations = true;
         board_to_matrix.replay();  
         SceneManager.LoadScene(0);
     }
 
 
-
+    public void animations_check()
+    {
+        animations = !animations;
+    }
 }

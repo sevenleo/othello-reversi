@@ -80,7 +80,7 @@ public class board_to_matrix : MonoBehaviour {
         {
             for (j = 0; j < 10; j++)
             {
-                main_board[i, j] = 0; //QUAL VALOR COLOCAR? ZERO NAO INFLUENCIA NO RESULTADO FINAL, ACHO Q ÉA UANICA OPCAO.
+                main_board[i, j] = 0; 
             }
         }
     }
@@ -151,7 +151,7 @@ public class board_to_matrix : MonoBehaviour {
 
     public static string matrix2board(position p)
     {
-        ////////// VERIFICAR SE O ASCII DO LINUX É IGUAL E ANTES DO A VEM O @
+        ////////// VERIFICAR SE O ASCII DO LINUX É IGUAL, E se ANTES DO A VEM O @
         char letra = '@'; //letra  
         char numero = '0'; //numero
 
@@ -371,7 +371,7 @@ public class board_to_matrix : MonoBehaviour {
         {
             for (j = 0; j < 10; j++)
             {
-                main_board[i, j] = 0; //QUAL VALOR COLOCAR? ZERO NAO INFLUENCIA NO RESULTADO FINAL, ACHO Q ÉA UANICA OPCAO.
+                main_board[i, j] = 0; 
             }
         }
 

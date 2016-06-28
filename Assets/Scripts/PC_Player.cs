@@ -33,9 +33,7 @@ public class PC_Player : MonoBehaviour {
 
     public static Collider minimax_playing(int[,] actualboard,bool player, int depth)
     {
-        int[,] board = actualboard;
-
-        
+        int[,] board = (int[,])actualboard.Clone();
 
         int value = board_to_matrix.CalculateBoardValue(board);
         Debug.Log("value = " + value);
@@ -57,7 +55,6 @@ public class PC_Player : MonoBehaviour {
         if (player){
             moves.ForEach(move =>
             {
-                File.AppendAllText("validmoves.txt", "+ move:" + move.toString() + "\n");
                 newvalue = minimax(board, move, depth,true);
                 if (newvalue > value)
                 {
@@ -71,7 +68,6 @@ public class PC_Player : MonoBehaviour {
         else{
             moves.ForEach(move =>
             {
-                File.AppendAllText("validmoves.txt", "- move:" + move.toString() + "\n");
                 newvalue = minimax(board, move, depth,false);
                 if (newvalue < value)
                 {
@@ -82,7 +78,6 @@ public class PC_Player : MonoBehaviour {
         }
 
         string name = board_to_matrix.matrix2board(playthis);
-        Debug.Log("try " + name);
         return GameObject.Find(name).GetComponent<Collider>();
     }
 
@@ -90,22 +85,16 @@ public class PC_Player : MonoBehaviour {
 
     static int minimax(int[,] actualboard, position move, int depth, bool player)
     {
-        /*
+        int[,] board = (int[,])actualboard.Clone();
         List<position> changes = new List<position>();
-
+        Debug.Log(move.x + " " + move.y+"  P-"+player);
         if (board_to_matrix.add(actualboard, board_to_matrix.matrix2board(move), changes, player))
         {
-            Debug.Log(move.x + " " + move.y + " new = " + board_to_matrix.CalculateBoardValue(actualboard));
+            Debug.Log(" new = " + board_to_matrix.CalculateBoardValue(actualboard));
             return board_to_matrix.CalculateBoardValue(actualboard);
         }
 
         else return 0;
-        */
-
-        int value = (int)(Random.Range(-100, 100));
-        Debug.Log(move.x + " " + move.y + " new = " + value);
-        return value;
-
-       
+        
     }
 }
