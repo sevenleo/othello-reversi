@@ -36,7 +36,7 @@ public class PC_Player : MonoBehaviour {
         int[,] board = (int[,])actualboard.Clone();
 
         int value = board_to_matrix.CalculateBoardValue(board);
-        Debug.Log("value = " + value);
+        //Debug.Log("value = " + value);
 
 
         List<position> moves = board_to_matrix.valid_moves(board);
@@ -87,10 +87,47 @@ public class PC_Player : MonoBehaviour {
     {
         int[,] board = (int[,])actualboard.Clone();
         List<position> changes = new List<position>();
-        Debug.Log(move.x + " " + move.y+"  P-"+player);
-        if (board_to_matrix.add(actualboard, board_to_matrix.matrix2board(move), changes, player))
+        List<position> moves;
+
+        if (board_to_matrix.add(board, board_to_matrix.matrix2board(move), changes, player))
         {
-            Debug.Log(" new = " + board_to_matrix.CalculateBoardValue(actualboard));
+            moves = board_to_matrix.valid_moves(board);
+            if (depth > 1 && moves.Count > 1) {
+
+                int newvalue, value = board_to_matrix.CalculateBoardValue(actualboard);
+                position playthis = moves[0];
+
+                //max
+                if (player)
+                {
+                    moves.ForEach(newmove =>
+                    {
+                        newvalue = minimax(board, newmove, depth-1, player);
+                        if (newvalue > value)
+                        {
+                            value = newvalue;
+                            playthis = newmove;
+                        }
+                    });
+                }
+
+                //min
+                else
+                {
+                    moves.ForEach(newmove =>
+                    {
+                        newvalue = minimax(board, newmove, depth-1, player);
+                        if (newvalue < value)
+                        {
+                            value = newvalue;
+                            playthis = newmove;
+                        }
+                    });
+                }
+
+            }
+
+            //Debug.Log(" new = " + board_to_matrix.CalculateBoardValue(actualboard));
             return board_to_matrix.CalculateBoardValue(actualboard);
         }
 

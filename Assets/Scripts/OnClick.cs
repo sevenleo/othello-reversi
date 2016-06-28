@@ -112,6 +112,7 @@ public class OnClick : MonoBehaviour {
                         Play(PC_Player.random_playing());
                     else
                         Play(PC_Player.minimax_playing(board_to_matrix.main_board,board_to_matrix.Turn, dif));
+
                     delaytime = Time.time + delay;
                 }
 
