@@ -117,7 +117,6 @@ public class OnClick : MonoBehaviour {
                 // pc vs pc
                 else
                 {
-                    
                     int dif = (int)GameObject.Find("dificuldade_slider").GetComponent<Slider>().value;
 
                     if ( dif == 0)
@@ -125,7 +124,6 @@ public class OnClick : MonoBehaviour {
                     else
                         Play(PC_Player.minimax_playing(board_to_matrix.main_board,board_to_matrix.Turn, dif));
                     delaytime = Time.time + delay;
-
                 }
 
 
@@ -187,9 +185,9 @@ public class OnClick : MonoBehaviour {
       
 
             //tenta adicionar a peca ao tabuleiro add() é booleana
-            if (board_to_matrix.add(board_to_matrix.main_board, collider.name, changed, board_to_matrix.Turn, 1))
+            if (board_to_matrix.add(board_to_matrix.main_board, collider.name, changed, board_to_matrix.Turn, true))
             {
-            Debug.Log("(P" + (board_to_matrix.Turn ? "1" : "2") + ")  em " + collider.name);
+                Debug.Log("(P" + (board_to_matrix.Turn ? "1" : "2") + ")  em " + collider.name);
                 //coloca a peca na casa selecionada com uma distancia para visualizacao
                 Vector3 distance = new Vector3(0, 0, (float)-0.5);
                 Instantiate(Piece, collider.transform.position + distance, collider.transform.rotation);
